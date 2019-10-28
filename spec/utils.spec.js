@@ -76,6 +76,26 @@ describe('formatDates', () => {
   }]
   expect(actual).to.deep.equal(expected) 
 })
+  it('does mutate the input array', () => {
+    const input = [{
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: 1542284514171,
+      votes: 100,
+    }]
+    inputCopy = [{
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: 1542284514171,
+      votes: 100,
+    }]
+    formatDates(input)
+    expect(input).to.deep.equal(inputCopy)
+  })
 })
 
 describe('makeRefObj', () => {});
