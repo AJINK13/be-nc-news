@@ -1,7 +1,10 @@
 exports.formatDates = list => {
 
-    return []
-};
+    for (let i = 0; i < list.length; i++) {
+        list[i].created_at = new Date(list[i].created_at)
+    }
+    return list
+}
 
 exports.makeRefObj = list => {
 
