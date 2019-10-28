@@ -140,4 +140,93 @@ describe('makeRefObj', () => {
     expect(actual).to.deep.equal(expected)
   })
 })
-describe('formatComments', () => {});
+describe('formatComments', () => {
+  it('returns an empty array when passed an empty comment array and an empty reference object', () => {
+    const inputComment = []
+    const inputRef = {}
+    const actual = formatComments(inputComment, inputRef)
+    const expected = []
+    expect(actual).to.deep.equal(expected)
+  })
+  it('returns an array containing one object with the created by property renamed to an author key, belongs to property renamed to article id which corresponds to the original title value provided and created at property converted into a JS date object with votes and body unchanged', () => {
+    const inputComment = [{
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      belongs_to: "They're not exactly dogs, are they?",
+      created_by: 'butter_bridge',
+      votes: 16,
+      created_at: 1511354163389
+    }]
+    const inputRef = {"They're not exactly dogs, are they?": 1}
+    const actual = formatComments(inputComment, inputRef)
+    const expected = [{ 
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      article_id: 1,
+      author: 'butter_bridge',
+      votes: 16,
+      created_at: new Date(1511354163389)
+    }]
+    expect(actual).to.deep.equal(expected)
+  })
+  it('returns an array containing two objects with the created by property renamed to an author key, belongs to property renamed to article id which corresponds to the original title value provided and created at property converted into a JS date object with votes and body unchanged', () => {
+    const inputComment = [{
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      belongs_to: "They're not exactly dogs, are they?",
+      created_by: 'butter_bridge',
+      votes: 16,
+      created_at: 1511354163389
+    },
+    {
+      body:
+        'The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.',
+      belongs_to: 'Living in the shadow of a great man',
+      created_by: 'butter_bridge',
+      votes: 14,
+      created_at: 1479818163389
+    }]
+    const inputRef = {"They're not exactly dogs, are they?": 1, "Living in the shadow of a great man": 2}
+    const actual = formatComments(inputComment, inputRef)
+    const expected = [{ 
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      article_id: 1,
+      author: 'butter_bridge',
+      votes: 16,
+      created_at: new Date(1511354163389)
+    },
+    {
+      body:
+        'The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.',
+      article_id: 2,
+      author: 'butter_bridge',
+      votes: 14,
+      created_at: new Date(1479818163389)
+    }]
+    expect(actual).to.deep.equal(expected)
+  })
+  it('does not mutate the input array and reference object', () => {
+    const inputComment = [{
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      belongs_to: "They're not exactly dogs, are they?",
+      created_by: 'butter_bridge',
+      votes: 16,
+      created_at: 1511354163389
+    }]
+    const copyInputComment = [{
+      body:
+        "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+      belongs_to: "They're not exactly dogs, are they?",
+      created_by: 'butter_bridge',
+      votes: 16,
+      created_at: 1511354163389
+    }]
+    const inputRef = {"They're not exactly dogs, are they?": 1}
+    const copyInputRef = {"They're not exactly dogs, are they?": 1}
+    formatComments(inputComment, inputRef)
+    expect(inputComment).to.deep.equal(copyInputComment)
+    expect(inputRef).to.deep.equal(copyInputRef)
+  })
+});
