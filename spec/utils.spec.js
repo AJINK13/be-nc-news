@@ -74,7 +74,7 @@ describe('formatDates', () => {
   }]
   expect(actual).to.deep.equal(expected) 
 })
-  it('does mutate the input array', () => {
+  it('does not mutate the input array', () => {
     const input = [{
       title: 'Living in the shadow of a great man',
       topic: 'mitch',
@@ -96,6 +96,48 @@ describe('formatDates', () => {
   })
 })
 
-describe('makeRefObj', () => {});
-
+describe('makeRefObj', () => {
+  it('returns an empty object when passed an empty object', () => {
+    const input = []
+    const actual = makeRefObj(input)
+    const expected = {}
+    expect(actual).to.deep.equal(expected)
+  })
+  it('returns an object with one key-value pair with the key being the article title and value being the article id when passed an array containing a single article object', () => {
+    const input = [{
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: 1542284514171,
+      votes: 100
+    }]
+    const actual = makeRefObj(input)
+    const expected = {'Living in the shadow of a great man': 1}
+    expect(actual).to.deep.equal(expected)
+  })
+  it('returns an object with two key-value pairs with the keys being the article title and values being the article id when passed an array containing two article objects', () => {
+    const input = [{
+      article_id: 1,
+      title: 'Living in the shadow of a great man',
+      topic: 'mitch',
+      author: 'butter_bridge',
+      body: 'I find this existence challenging',
+      created_at: 1542284514171,
+      votes: 100
+    },
+    {
+      article_id: 2,
+      title: 'Eight pug gifs that remind me of mitch',
+      topic: 'mitch',
+      author: 'icellusedkars',
+      body: 'some gifs',
+      created_at: 1289996514171
+    }]
+    const actual = makeRefObj(input)
+    const expected = {'Living in the shadow of a great man': 1, 'Eight pug gifs that remind me of mitch': 2}
+    expect(actual).to.deep.equal(expected)
+  })
+})
 describe('formatComments', () => {});
