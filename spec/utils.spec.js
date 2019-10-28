@@ -5,8 +5,6 @@ const {
   formatComments,
 } = require('../db/utils/utils');
 
-// last test for each is to test for mutation
-
 describe('formatDates', () => {
   it('returns an empty array when passed an empty array', () => {
     const input = []
