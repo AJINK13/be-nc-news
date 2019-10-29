@@ -60,6 +60,13 @@ describe("/api", () => {
             });
           });
       });
-    });
+      describe("/:username ERRORS", () => {
+        it("/users/1: ERROR - GET request for invalid syntax for username returns status 404 (Not Found)", () => {
+          return request(app)
+            .get("/api/users/not-a-user")
+            .expect(404)
+        });
+      });
+    }); // END OF DESCRIBE /:username BLOCK
   }); // END OF DESCRIBE USERS BLOCK
 }); // END OF DESCRIBE API BLOCK
