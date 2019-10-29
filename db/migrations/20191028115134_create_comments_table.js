@@ -13,5 +13,5 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
 
-    return knex.scheme.dropTable('comments')
+    return knex.schema.dropTable('comments')
 };
