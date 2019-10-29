@@ -27,6 +27,7 @@ describe("/api", () => {
         .get("/api/topics")
         .expect(200)
         .then(response => {
+          expect(response.body.topics).to.have.length(3);
           expect(response.body.topics[0]).to.have.keys("slug", "description");
         });
     });
@@ -37,6 +38,7 @@ describe("/api", () => {
         .get("/api/users")
         .expect(200)
         .then(response => {
+          expect(response.body.users).to.have.length(4);
           expect(response.body.users).to.be.an("array");
           expect(response.body.users[0]).to.have.keys(
             "username",
@@ -61,7 +63,7 @@ describe("/api", () => {
           });
       });
       describe("/:username ERRORS", () => {
-        it("/users/1: ERROR - GET request for invalid syntax for username returns status 404 (Not Found)", () => {
+        it("/users/not-a-user: ERROR - GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/users/not-a-user")
             .expect(404)
@@ -81,6 +83,7 @@ describe("/api", () => {
         .get("/api/articles")
         .expect(200)
         .then(response => {
+          expect(response.body.articles).to.have.length(12);
           expect(response.body.articles).to.be.an("array");
           expect(response.body.articles[0]).to.have.keys(
             "article_id",
@@ -93,5 +96,48 @@ describe("/api", () => {
           );
         });
     });
+    describe("/:article_id", () => {
+      it("GET-200: returns an article object for the specified article_id", () => {
+        return request(app)
+          .get("/api/articles/1")
+          .expect(200)
+          .then(response => {
+            expect(response.body.article).to.be.an("object");
+            expect(response.body.article).to.deep.equal({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              body: "I find this existence challenging",
+              votes: 100,
+              topic: "mitch",
+              author: "butter_bridge",
+              created_at: "2018-11-15T12:21:54.171Z"
+            });
+          });
+      });
+      describe("/:article_id ERRORS", () => {
+        it("/articles/999: ERROR - GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+          return request(app)
+            .get("/api/articles/999")
+            .expect(404)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                HTTP_Error: "404: Not Found",
+                Message: "Valid Input Syntax But Does Not Exist"
+              });
+            });
+        });
+        it("/articles/abcdef: ERROR - GET request for invalid syntax for username returns status 400 (Bad Request", () => {
+          return request(app)
+            .get("/api/articles/abcdef")
+            .expect(400)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                HTTP_Error: "400: Bad Request",
+                Message: "Invalid Input Syntax - Expected Integer"
+              });
+            });
+        });
+      });
+    }); // END OF DESCRIBE /:article_id
   }); // END OF DESCRIBE ARTICLES BLOCK
 }); // END OF DESCRIBE API BLOCK
