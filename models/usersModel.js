@@ -4,4 +4,10 @@ const fetchUsers = () => {
   return connection("users").select("*");
 };
 
-module.exports = fetchUsers;
+const fetchUserByUsername = username => {
+  return connection("users")
+    .first("*")
+    .where("username", username)
+};
+
+module.exports = { fetchUsers, fetchUserByUsername };

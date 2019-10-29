@@ -45,5 +45,21 @@ describe("/api", () => {
           );
         });
     });
+    describe("/:username", () => {
+      it("GET-200: returns an user object for the specified username", () => {
+        return request(app)
+          .get("/api/users/icellusedkars")
+          .expect(200)
+          .then(response => {
+            expect(response.body.user).to.be.an("object");
+            expect(response.body.user).to.be.deep.equal({
+              username: "icellusedkars",
+              avatar_url:
+                "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+              name: "sam"
+            });
+          });
+      });
+    });
   }); // END OF DESCRIBE USERS BLOCK
 }); // END OF DESCRIBE API BLOCK
