@@ -31,5 +31,19 @@ describe("/api", () => {
         });
     });
   }); // END OF DESCRIBE TOPICS BLOCK
-  
+  describe("/users", () => {
+    it("GET-200: returns all the users", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(response => {
+          expect(response.body.users).to.be.an("array");
+          expect(response.body.users[0]).to.have.keys(
+            "username",
+            "avatar_url",
+            "name"
+          );
+        });
+    });
+  }); // END OF DESCRIBE USERS BLOCK
 }); // END OF DESCRIBE API BLOCK
