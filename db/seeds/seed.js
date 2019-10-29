@@ -1,10 +1,4 @@
-const {
-  topicData,
-  articleData,
-  commentData,
-  userData
-} = require('../data/index.js')
-
+const { topicData, articleData, commentData, userData } = require('../data/index.js')
 const { formatDates, formatComments, makeRefObj } = require('../utils/utils')
 
 exports.seed = function(knex) {
