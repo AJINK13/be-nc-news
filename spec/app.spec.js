@@ -6,7 +6,7 @@ const connection = require("../db/connection.js");
 
 describe("/api", () => {
   after(() => {
-    connection.destroy();
+    return connection.destroy();
   });
   beforeEach(() => {
     return connection.seed.run();
@@ -52,7 +52,7 @@ describe("/api", () => {
           .expect(200)
           .then(response => {
             expect(response.body.user).to.be.an("object");
-            expect(response.body.user).to.be.deep.equal({
+            expect(response.body.user).to.deep.equal({
               username: "icellusedkars",
               avatar_url:
                 "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
@@ -65,8 +65,33 @@ describe("/api", () => {
           return request(app)
             .get("/api/users/not-a-user")
             .expect(404)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                HTTP_Error: "404: Not Found",
+                Message: "Valid Input Syntax But Does Not Exist"
+              });
+            });
         });
       });
     }); // END OF DESCRIBE /:username BLOCK
   }); // END OF DESCRIBE USERS BLOCK
+  describe("/articles", () => {
+    it("GET-200: returns all the articles", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.be.an("array");
+          expect(response.body.articles[0]).to.have.keys(
+            "article_id",
+            "title",
+            "body",
+            "votes",
+            "topic",
+            "author",
+            "created_at"
+          );
+        });
+    });
+  }); // END OF DESCRIBE ARTICLES BLOCK
 }); // END OF DESCRIBE API BLOCK
