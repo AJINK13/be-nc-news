@@ -110,7 +110,8 @@ describe("/api", () => {
               votes: 100,
               topic: "mitch",
               author: "butter_bridge",
-              created_at: "2018-11-15T12:21:54.171Z"
+              created_at: "2018-11-15T12:21:54.171Z",
+              comment_count: "13"
             });
           });
       });
@@ -126,7 +127,7 @@ describe("/api", () => {
               });
             });
         });
-        it("/articles/abcdef: ERROR - GET request for invalid syntax for username returns status 400 (Bad Request", () => {
+        it("/articles/abcdef: ERROR - GET request for invalid syntax for username returns status 400 (Bad Request)", () => {
           return request(app)
             .get("/api/articles/abcdef")
             .expect(400)
