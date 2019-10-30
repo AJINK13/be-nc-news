@@ -27,11 +27,12 @@ const fetchArticleByArticleID = article_id => {
 const updateArticleByArticleID = (article_id, patchVote) => {
   let updateVote = patchVote.inc_votes;
   if (!patchVote.inc_votes) updateVote = 0;
-  if(Object.keys(patchVote).length !== 1) {
+  if (Object.keys(patchVote).length !== 1) {
     return Promise.reject({
       status: 400,
-      message: "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
-    })
+      message:
+        "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
+    });
   }
   return connection
     .from("articles")
@@ -39,7 +40,14 @@ const updateArticleByArticleID = (article_id, patchVote) => {
     .increment("votes", updateVote)
     .returning("*")
     .then(([article]) => {
-      return article;
+      if (!article) {
+        return Promise.reject({
+          status: 404,
+          message: "Not Found: Valid Input Syntax But Does Not Exist"
+        });
+      } else {
+        return article;
+      }
     });
 };
 

@@ -182,7 +182,7 @@ describe("/api", () => {
               });
             });
         });
-        it("PATCH-400: PATCH request for multiple items on request body returns an error message explaining", () => {
+        it("PATCH-400: PATCH request for multiple items on request body returns status 400 (Bad Request)", () => {
           return request(app)
             .patch("/api/articles/1")
             .send({ inc_votes: 100, not_inc_votes: 100 })
@@ -194,6 +194,28 @@ describe("/api", () => {
               });
             });
         });
+        it("PATCH-404: PATCH request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
+          return request(app)
+            .patch("/api/articles/999")
+            .send({ inc_votes: 100 })
+            .expect(404)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+              });
+            });
+        });
+        it("PATCH-400: PATCH request for invalid syntax for article_id returns 400 (Bad Request)", () => {
+          return request(app)
+          .patch("/api/articles/article_id")
+          .send({ inc_votes: 100 })
+          .expect(400)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+            })
+          })
+        })
       });
     }); // END OF DESCRIBE /:article_id
   }); // END OF DESCRIBE ARTICLES BLOCK
