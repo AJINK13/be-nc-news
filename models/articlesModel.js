@@ -4,7 +4,7 @@ const fetchArticles = () => {
   return connection("articles").select("*")
 }
 
-const fetchArticleByArticleID = article_id => {
+const fetchArticle = article_id => {
   return connection
     .select("articles.*")
     .from("articles")
@@ -24,7 +24,7 @@ const fetchArticleByArticleID = article_id => {
     })
 }
 
-const updateArticleByArticleID = (article_id, patchVote) => {
+const updateArticle = (article_id, patchVote) => {
   let updateVote = patchVote.inc_votes
   if (!patchVote.inc_votes) updateVote = 0
   if (Object.keys(patchVote).length !== 1) {
@@ -51,8 +51,24 @@ const updateArticleByArticleID = (article_id, patchVote) => {
     })
 }
 
+addComment = (article_id, comment) => {
+  const newComment = {
+    author: comment.username,
+    body: comment.body,
+    article_id: article_id
+  }
+  console.log(newComment)
+  return connection("comments")
+    .insert(newComment)
+    .returning("*")
+    .then(([comment]) => {
+      return comment
+    })
+}
+
 module.exports = {
   fetchArticles,
-  fetchArticleByArticleID,
-  updateArticleByArticleID
+  fetchArticle,
+  updateArticle,
+  addComment
 }

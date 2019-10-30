@@ -95,7 +95,7 @@ describe("/api", () => {
           )
         })
     })
-    describe.only("/:article_id", () => {
+    describe("/:article_id", () => {
       it("GET-200: returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)
           .get("/api/articles/1")
@@ -207,13 +207,35 @@ describe("/api", () => {
         })
         it("PATCH-400: PATCH request for invalid syntax for article_id returns 400 (Bad Request)", () => {
           return request(app)
-            .patch("/api/articles/article_id")
+            .patch("/api/articles/abcdef")
             .send({ inc_votes: 100 })
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
                 Message: "Bad Request: Invalid Input Syntax - Expected Integer"
               })
+            })
+        })
+      })
+      describe.only("/comments", () => {
+        it("POST-201: POST request returns the newly added comment", () => {
+          return request(app)
+            .post("/api/articles/1/comments")
+            .send({ username: "butter_bridge", body: "newly added comment" })
+            .expect(201)
+            .then(response => {
+              expect(response.body.comment).to.have.keys(
+                "comment_id",
+                "author",
+                "article_id",
+                "votes",
+                "created_at",
+                "body"
+              )
+              expect(response.body.comment.author).to.equal("butter_bridge")
+              expect(response.body.comment.body).to.equal("newly added comment")
+              expect(response.body.comment.comment_id).to.equal(19)
+              expect(response.body.comment.article_id).to.equal(1)
             })
         })
       })
