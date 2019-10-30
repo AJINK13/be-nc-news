@@ -5,11 +5,11 @@ const app = require("../app.js");
 const connection = require("../db/connection.js");
 
 describe("/api", () => {
-  after(() => {
-    return connection.destroy();
-  });
   beforeEach(() => {
     return connection.seed.run();
+  });
+  after(() => {
+    return connection.destroy();
   });
   it("GET-200: sends a message welcoming the user to our application", () => {
     return request(app)
@@ -97,7 +97,7 @@ describe("/api", () => {
         });
     });
     describe("/:article_id", () => {
-      it("GET-200: returns an article object for the specified article_id", () => {
+      it("GET-200: returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)
           .get("/api/articles/1")
           .expect(200)
@@ -112,6 +112,24 @@ describe("/api", () => {
               author: "butter_bridge",
               created_at: "2018-11-15T12:21:54.171Z",
               comment_count: "13"
+            });
+          });
+      });
+      it.only("PATCH-200: returns an article object for the specified article_id along with the votes property updated according to the patch request", () => {
+        return request(app)
+          .patch("/api/articles/1")
+          .send({ incVotes: 100 })
+          .expect(200)
+          .then(response => {
+            expect(response.body.article).to.be.an("object");
+            expect(response.body.article).to.deep.equal({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              body: "I find this existence challenging",
+              votes: 200,
+              topic: "mitch",
+              author: "butter_bridge",
+              created_at: "2018-11-15T12:21:54.171Z"
             });
           });
       });

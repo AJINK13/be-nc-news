@@ -5,13 +5,14 @@ const fetchArticles = () => {
 };
 
 const fetchArticleByArticleID = article_id => {
-  return connection.select("articles.*")
+  return connection
+    .select("articles.*")
     .from("articles")
     .where("articles.article_id", article_id)
-    .count({ comment_count: 'comments.article_id' })
+    .count({ comment_count: "comments.article_id" })
     .leftJoin("comments", "articles.article_id", "comments.article_id")
     .groupBy("articles.article_id")
-    .then(([ article ]) => {
+    .then(([article]) => {
       if (!article) {
         return Promise.reject({
           HTTP_Error: "404: Not Found",
@@ -23,4 +24,20 @@ const fetchArticleByArticleID = article_id => {
     });
 };
 
-module.exports = { fetchArticles, fetchArticleByArticleID };
+const updateArticleByArticleID = (article_id, patchVote) => {
+  const updateVote = patchVote.incVotes;
+  return connection
+  .from("articles")
+  .where("articles.article_id", article_id)
+  .increment("votes", updateVote)
+  .returning("*")
+  .then(([article]) => {
+    return article
+  })
+};
+
+module.exports = {
+  fetchArticles,
+  fetchArticleByArticleID,
+  updateArticleByArticleID
+};

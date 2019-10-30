@@ -1,6 +1,7 @@
 const {
   fetchArticles,
-  fetchArticleByArticleID
+  fetchArticleByArticleID,
+  updateArticleByArticleID
 } = require("../models/articlesModel.js");
 
 const getArticles = (req, res, next) => {
@@ -18,4 +19,18 @@ const getArticleByArticleID = (req, res, next) => {
     .catch(err => next(err));
 };
 
-module.exports = { getArticles, getArticleByArticleID };
+const patchArticleByArticleID = (req, res, next) => {
+  const { article_id } = req.params;
+  const patchVote = req.body;
+  updateArticleByArticleID(article_id, patchVote)
+    .then(article => {
+      res.status(200).json({ article });
+    })
+    .catch(err => next(err));
+};
+
+module.exports = {
+  getArticles,
+  getArticleByArticleID,
+  patchArticleByArticleID
+};
