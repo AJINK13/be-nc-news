@@ -1,14 +1,14 @@
-const express = require("express");
-const app = express();
-const apiRouter = require("./routes/apiRouter.js");
-const customErr = require("./errors/customErr.js");
-const psqlErr = require("./errors/psqlErr.js");
+const express = require("express")
+const app = express()
+const apiRouter = require("./routes/apiRouter.js")
+const customErr = require("./errors/customErr.js")
+const psqlErr = require("./errors/psqlErr.js")
 
-app.use(express.json());
+app.use(express.json())
 
-app.use("/api", apiRouter);
+app.use("/api", apiRouter)
 
-app.use(psqlErr);
-app.use(customErr);
+app.use(psqlErr)
+app.use(customErr)
 
-module.exports = app;
+module.exports = app

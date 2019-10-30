@@ -1,8 +1,8 @@
-const connection = require("../db/connection.js");
+const connection = require("../db/connection.js")
 
 const fetchArticles = () => {
-  return connection("articles").select("*");
-};
+  return connection("articles").select("*")
+}
 
 const fetchArticleByArticleID = article_id => {
   return connection
@@ -17,22 +17,22 @@ const fetchArticleByArticleID = article_id => {
         return Promise.reject({
           status: 404,
           message: "Not Found: Valid Input Syntax But Does Not Exist"
-        });
+        })
       } else {
-        return article;
+        return article
       }
-    });
-};
+    })
+}
 
 const updateArticleByArticleID = (article_id, patchVote) => {
-  let updateVote = patchVote.inc_votes;
-  if (!patchVote.inc_votes) updateVote = 0;
+  let updateVote = patchVote.inc_votes
+  if (!patchVote.inc_votes) updateVote = 0
   if (Object.keys(patchVote).length !== 1) {
     return Promise.reject({
       status: 400,
       message:
         "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
-    });
+    })
   }
   return connection
     .from("articles")
@@ -44,15 +44,15 @@ const updateArticleByArticleID = (article_id, patchVote) => {
         return Promise.reject({
           status: 404,
           message: "Not Found: Valid Input Syntax But Does Not Exist"
-        });
+        })
       } else {
-        return article;
+        return article
       }
-    });
-};
+    })
+}
 
 module.exports = {
   fetchArticles,
   fetchArticleByArticleID,
   updateArticleByArticleID
-};
+}

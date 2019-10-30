@@ -1,8 +1,8 @@
-const connection = require("../db/connection.js");
+const connection = require("../db/connection.js")
 
 const fetchUsers = () => {
-  return connection("users").select("*");
-};
+  return connection("users").select("*")
+}
 
 const fetchUserByUsername = username => {
   return connection("users")
@@ -13,11 +13,11 @@ const fetchUserByUsername = username => {
         return Promise.reject({
           status: 404,
           message: "Not Found: Valid Input Syntax But Does Not Exist"
-        });
+        })
       } else {
         return username
       }
-    });
-};
+    })
+}
 
-module.exports = { fetchUsers, fetchUserByUsername };
+module.exports = { fetchUsers, fetchUserByUsername }

@@ -5,15 +5,15 @@ exports.up = function(knex) {
     topicsTable
       .string("slug")
       .primary()
-      .notNullable();
-    topicsTable.string("description").notNullable();
-  });
-};
+      .notNullable()
+    topicsTable.string("description").notNullable()
+  })
+}
 
 exports.down = function(knex) {
   // The `down` function does the opposite of the `up` function.
   // For example, if `up` creates a particular table then `down` must use commands to drop the same table.
   // The `down` function allows us to quickly undo a migration if need be.
 
-  return knex.schema.dropTable("topics");
-};
+  return knex.schema.dropTable("topics")
+}
