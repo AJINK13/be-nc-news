@@ -95,7 +95,7 @@ describe("/api", () => {
           );
         });
     });
-    describe("/:article_id", () => {
+    describe.only("/:article_id", () => {
       it("GET-200: returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)
           .get("/api/articles/1")
@@ -132,7 +132,25 @@ describe("/api", () => {
             });
           });
       });
-      describe.only("/:article_id ERRORS", () => {
+      it("PATCH-200: returns an article object for the specified article_id with the votes property not updated when inc_votes is not on the body", () => {
+        return request(app)
+          .patch("/api/articles/1")
+          .send({ not_inc_votes: 100 })
+          .expect(200)
+          .then(response => {
+            expect(response.body.article).to.be.an("object");
+            expect(response.body.article).to.deep.equal({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              body: "I find this existence challenging",
+              votes: 100,
+              topic: "mitch",
+              author: "butter_bridge",
+              created_at: "2018-11-15T12:21:54.171Z"
+            });
+          });
+      });
+      describe("/:article_id ERRORS", () => {
         it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/articles/999")
@@ -161,6 +179,18 @@ describe("/api", () => {
             .then(response => {
               expect(response.body).to.deep.equal({
                 Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+              });
+            });
+        });
+        it("PATCH-400: PATCH request for multiple items on request body returns an error message explaining", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: 100, not_inc_votes: 100 })
+            .expect(400)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message:
+                  "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
               });
             });
         });

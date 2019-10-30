@@ -25,15 +25,22 @@ const fetchArticleByArticleID = article_id => {
 };
 
 const updateArticleByArticleID = (article_id, patchVote) => {
-  const updateVote = patchVote.inc_votes;
+  let updateVote = patchVote.inc_votes;
+  if (!patchVote.inc_votes) updateVote = 0;
+  if(Object.keys(patchVote).length !== 1) {
+    return Promise.reject({
+      status: 400,
+      message: "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
+    })
+  }
   return connection
-  .from("articles")
-  .where("articles.article_id", article_id)
-  .increment("votes", updateVote)
-  .returning("*")
-  .then(([article]) => {
-    return article
-  })
+    .from("articles")
+    .where("articles.article_id", article_id)
+    .increment("votes", updateVote)
+    .returning("*")
+    .then(([article]) => {
+      return article;
+    });
 };
 
 module.exports = {
