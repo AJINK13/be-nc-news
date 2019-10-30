@@ -15,8 +15,8 @@ const fetchArticleByArticleID = article_id => {
     .then(([article]) => {
       if (!article) {
         return Promise.reject({
-          HTTP_Error: "404: Not Found",
-          Message: "Valid Input Syntax But Does Not Exist"
+          status: 404,
+          message: "Not Found: Valid Input Syntax But Does Not Exist"
         });
       } else {
         return article;
@@ -25,7 +25,7 @@ const fetchArticleByArticleID = article_id => {
 };
 
 const updateArticleByArticleID = (article_id, patchVote) => {
-  const updateVote = patchVote.incVotes;
+  const updateVote = patchVote.inc_votes;
   return connection
   .from("articles")
   .where("articles.article_id", article_id)

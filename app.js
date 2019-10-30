@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.use("/api", apiRouter);
 
+
 app.use(psqlErr);
 app.use(customErr);
 

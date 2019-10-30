@@ -63,14 +63,13 @@ describe("/api", () => {
           });
       });
       describe("/:username ERRORS", () => {
-        it("/users/not-a-user: ERROR - GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+        it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/users/not-a-user")
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                HTTP_Error: "404: Not Found",
-                Message: "Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax But Does Not Exist"
               });
             });
         });
@@ -115,10 +114,10 @@ describe("/api", () => {
             });
           });
       });
-      it.only("PATCH-200: returns an article object for the specified article_id along with the votes property updated according to the patch request", () => {
+      it("PATCH-200: returns an article object for the specified article_id along with the votes property updated according to the patch request", () => {
         return request(app)
           .patch("/api/articles/1")
-          .send({ incVotes: 100 })
+          .send({ inc_votes: 100 })
           .expect(200)
           .then(response => {
             expect(response.body.article).to.be.an("object");
@@ -133,26 +132,35 @@ describe("/api", () => {
             });
           });
       });
-      describe("/:article_id ERRORS", () => {
-        it("/articles/999: ERROR - GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+      describe.only("/:article_id ERRORS", () => {
+        it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/articles/999")
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                HTTP_Error: "404: Not Found",
-                Message: "Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax But Does Not Exist"
               });
             });
         });
-        it("/articles/abcdef: ERROR - GET request for invalid syntax for username returns status 400 (Bad Request)", () => {
+        it("GET-400: GET request for invalid syntax for username returns status 400 (Bad Request)", () => {
           return request(app)
             .get("/api/articles/abcdef")
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                HTTP_Error: "400: Bad Request",
-                Message: "Invalid Input Syntax - Expected Integer"
+                Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+              });
+            });
+        });
+        it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: "not-a-number" })
+            .expect(400)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Bad Request: Invalid Input Syntax - Expected Integer"
               });
             });
         });

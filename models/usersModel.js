@@ -11,8 +11,8 @@ const fetchUserByUsername = username => {
     .then(username => {
       if (!username) {
         return Promise.reject({
-          HTTP_Error: "404: Not Found",
-          Message: "Valid Input Syntax But Does Not Exist"
+          status: 404,
+          message: "Not Found: Valid Input Syntax But Does Not Exist"
         });
       } else {
         return username
