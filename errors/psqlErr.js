@@ -1,8 +1,13 @@
 const psqlErr = (err, req, res, next) => {
+  console.log(err)
   const psqlCode = {
     "22P02": {
       status: 400,
       message: "Bad Request: Invalid Input Syntax - Expected Integer"
+    },
+    "23503": {
+      status: 404,
+      message: "Not Found: Valid Input Syntax For article_id But Does Not Exist"
     }
   }
   const psqlError = psqlCode[err.code]

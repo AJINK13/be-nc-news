@@ -238,7 +238,77 @@ describe("/api", () => {
               expect(response.body.comment.article_id).to.equal(1)
             })
         })
-      })
+        describe.only("/comments ERRORS", () => {
+          it("POST-404: POST request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+            return request(app)
+              .post("/api/articles/999/comments")
+              .send({ username: "butter_bridge", body: "newly added comment" })
+              .expect(404)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+                })
+              })
+          })
+          it("POST-400: POST request for invalid syntax for article_id returns 400 (Bad Request)", () => {
+            return request(app)
+              .post("/api/articles/abcdef/comments")
+              .send({ username: "butter_bridge", body: "newly added comment" })
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: Invalid Input Syntax - Expected Integer"
+                })
+              })
+          })
+          it("POST-400: POST request for multiple items on request body returns status 400 (Bad Request)", () => {
+            return request(app)
+              .post("/api/articles/1/comments")
+              .send({
+                username: "butter_bridge",
+                body: "newly added comment",
+                other: "this should not exist"
+              })
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+                })
+              })
+          })
+          it("POST-400: POST request for no body on the request body returns status 400 (Bad Request)", () => {
+            return request(app)
+              .post("/api/articles/1/comments")
+              .send({
+                username: "butter_bridge"
+              })
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+                })
+              })
+          })
+          it("POST-400: POST request for no username on the request body returns status 400 (Bad Request)", () => {
+            return request(app)
+              .post("/api/articles/1/comments")
+              .send({
+                body: "newly added comment"
+              })
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+                })
+              })
+          })
+        })
+      }) // END OF DESCRIBE /comments
     }) // END OF DESCRIBE /:article_id
   }) // END OF DESCRIBE ARTICLES BLOCK
 }) // END OF DESCRIBE API BLOCK

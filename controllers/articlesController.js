@@ -37,6 +37,7 @@ const postCommentByArticleID = (req, res, next) => {
     console.log(comment)
     res.status(201).json({ comment })
   })
+  .catch(err => next(err))
 }
 
 module.exports = {

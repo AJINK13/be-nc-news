@@ -57,6 +57,13 @@ addComment = (article_id, comment) => {
     body: comment.body,
     article_id: article_id
   }
+  if (Object.keys(comment).length !== 2) {
+    return Promise.reject({
+      status: 400,
+      message:
+        "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+    })
+  }
   console.log(newComment)
   return connection("comments")
     .insert(newComment)
