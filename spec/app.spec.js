@@ -1,8 +1,11 @@
 process.env.NODE_ENV = "test"
 const { expect } = require("chai")
 const request = require("supertest")
+const chai = require("chai")
+const chai_sorted = require("chai-sorted")
 const app = require("../app.js")
 const connection = require("../db/connection.js")
+chai.use(chai_sorted)
 
 describe("/api", () => {
   beforeEach(() => {
@@ -239,7 +242,7 @@ describe("/api", () => {
               expect(response.body.comment.votes).to.equal(0)
             })
         })
-        it.only("GET-200: GET request returns an array of comments for the specified article_id", () => {
+        it("GET-200: GET request returns an array of comments for the specified article_id", () => {
           return request(app)
             .get("/api/articles/1/comments")
             .expect(200)
@@ -247,9 +250,37 @@ describe("/api", () => {
               expect(response.body.comments).to.have.length(13)
               expect(response.body.comments).to.be.an("array")
               response.body.comments.forEach(comment => {
-                expect(comment).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
+                expect(comment).to.have.keys(
+                  "comment_id",
+                  "author",
+                  "article_id",
+                  "votes",
+                  "created_at",
+                  "body"
+                )
                 expect(comment.article_id).to.equal(1)
               })
+            })
+        })
+        it.only("GET-200: GET request returns an array of comments for the specified article_id sorted by descending order of created_at", () => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(response => {
+              expect(response.body.comments).to.have.length(13)
+              expect(response.body.comments).to.be.an("array")
+              response.body.comments.forEach(comment => {
+                expect(comment).to.have.keys(
+                  "comment_id",
+                  "author",
+                  "article_id",
+                  "votes",
+                  "created_at",
+                  "body"
+                )
+                expect(comment.article_id).to.equal(1)
+              })
+              expect(response.body.comments).to.be.descendingBy("created_at")
             })
         })
         describe("/comments ERRORS", () => {
