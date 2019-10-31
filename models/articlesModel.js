@@ -1,7 +1,7 @@
 const connection = require("../db/connection.js")
 
 const fetchArticles = () => {
-  return connection("articles").select("*")
+  return connection.select("*").from("articles")
 }
 
 const fetchArticle = article_id => {
@@ -72,7 +72,15 @@ addComment = (article_id, comment) => {
     })
 }
 
-fetchComments = () => {}
+fetchComments = article_id => {
+  return connection
+    .select("*")
+    .from("comments")
+    .where("article_id", article_id)
+    .then(comments => {
+      return comments
+    })
+}
 
 module.exports = {
   fetchArticles,

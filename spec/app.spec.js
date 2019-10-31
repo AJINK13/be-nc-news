@@ -244,7 +244,9 @@ describe("/api", () => {
             .get("/api/articles/1/comments")
             .expect(200)
             .then(response => {
-              console.log(response)
+              expect(response.body.comments).to.have.length(13)
+              expect(response.body.comments).to.be.an("array")
+              expect(response.body.comments[0]).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
             })
         })
         describe("/comments ERRORS", () => {
