@@ -316,6 +316,17 @@ describe("/api", () => {
                 })
               })
           })
+          it("POST-400: POST request for nothing on the request body return status 400 (Bad Request)", () => {
+            return request(app)
+              .post("/api/articles/1/comments")
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+                })
+              })
+          })
         })
       }) // END OF DESCRIBE /comments
     }) // END OF DESCRIBE /:article_id
