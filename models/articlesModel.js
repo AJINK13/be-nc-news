@@ -72,11 +72,12 @@ addComment = (article_id, comment) => {
     })
 }
 
-fetchComments = article_id => {
+fetchComments = (article_id, sort_by, order) => {
   return connection
     .select("*")
     .from("comments")
     .where("article_id", article_id)
+    .orderBy(sort_by || "created_at", order || "desc")
     .then(comments => {
       return comments
     })

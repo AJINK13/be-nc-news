@@ -44,7 +44,8 @@ const postCommentByArticleID = (req, res, next) => {
 
 const getCommentsByArticleID = (req, res, next) => {
   const { article_id } = req.params
-  fetchComments(article_id)
+  const { sort_by, order } = req.query
+  fetchComments(article_id, sort_by, order)
     .then(comments => {
       res.status(200).json({ comments })
     })
