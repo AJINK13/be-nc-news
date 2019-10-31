@@ -79,6 +79,20 @@ fetchComments = (article_id, sortBy, order) => {
     .where("article_id", article_id)
     .orderBy(sortBy || "created_at", order || "desc")
     .then(comments => {
+      if (!comments.length) {
+        return connection
+          .select("*")
+          .from("articles")
+          .where("article_id", article_id)
+          .then(([article]) => {
+            if(!article) {
+              return Promise.reject({
+                status: 404,
+                message: "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+              })
+            }
+          })
+      }
       return comments
     })
 }

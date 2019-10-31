@@ -262,7 +262,7 @@ describe("/api", () => {
               })
             })
         })
-        it.only("GET-200: GET request returns an array of comments for the specified article_id sorted by descending order of created_at", () => {
+        it("GET-200: GET request returns an array of comments for the specified article_id sorted by descending order of created_at", () => {
           return request(app)
             .get("/api/articles/1/comments")
             .expect(200)
@@ -325,8 +325,8 @@ describe("/api", () => {
               expect(response.body.comments).to.be.ascendingBy("comment_id")
             })
         })
-        describe("/comments ERRORS", () => {
-          it("POST-404: POST request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+        describe.only("/comments ERRORS", () => {
+          it("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")
               .send({ username: "butter_bridge", body: "newly added comment" })
@@ -402,6 +402,17 @@ describe("/api", () => {
                 expect(response.body).to.deep.equal({
                   Message:
                     "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
+                })
+              })
+          })
+          it.only("GET-404: GET request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
+            return request(app)
+              .get("/api/articles/999/comments")
+              .expect(404)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Not Found: Valid Input Syntax For article_id But Does Not Exist"
                 })
               })
           })
