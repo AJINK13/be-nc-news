@@ -283,9 +283,9 @@ describe("/api", () => {
               expect(response.body.comments).to.be.descendingBy("created_at")
             })
         })
-        it.only("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query in default descending order", () => {
+        it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query in default descending order", () => {
           return request(app)
-            .get("/api/articles/1/comments?sort_by=comment_id")
+            .get("/api/articles/1/comments?sortBy=comment_id")
             .expect(200)
             .then(response => {
               expect(response.body.comments).to.have.length(13)
@@ -302,6 +302,27 @@ describe("/api", () => {
                 expect(comment.article_id).to.equal(1)
               })
               expect(response.body.comments).to.be.descendingBy("comment_id")
+            })
+        })
+        it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query in default descending order", () => {
+          return request(app)
+            .get("/api/articles/1/comments?sortBy=comment_id&order=asc")
+            .expect(200)
+            .then(response => {
+              expect(response.body.comments).to.have.length(13)
+              expect(response.body.comments).to.be.an("array")
+              response.body.comments.forEach(comment => {
+                expect(comment).to.have.keys(
+                  "comment_id",
+                  "author",
+                  "article_id",
+                  "votes",
+                  "created_at",
+                  "body"
+                )
+                expect(comment.article_id).to.equal(1)
+              })
+              expect(response.body.comments).to.be.ascendingBy("comment_id")
             })
         })
         describe("/comments ERRORS", () => {
