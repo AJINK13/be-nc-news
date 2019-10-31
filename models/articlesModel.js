@@ -64,7 +64,6 @@ addComment = (article_id, comment) => {
         "Bad Request: 'username: value' And 'body: value' Must Be The Only Two Key-Value Pairs On Request Body"
     })
   }
-  console.log(newComment)
   return connection("comments")
     .insert(newComment)
     .returning("*")
@@ -73,9 +72,12 @@ addComment = (article_id, comment) => {
     })
 }
 
+fetchComments = () => {}
+
 module.exports = {
   fetchArticles,
   fetchArticle,
   updateArticle,
-  addComment
+  addComment,
+  fetchComments
 }

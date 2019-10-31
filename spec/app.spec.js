@@ -236,9 +236,18 @@ describe("/api", () => {
               expect(response.body.comment.body).to.equal("newly added comment")
               expect(response.body.comment.comment_id).to.equal(19)
               expect(response.body.comment.article_id).to.equal(1)
+              expect(response.body.comment.votes).to.equal(0)
             })
         })
-        describe.only("/comments ERRORS", () => {
+        it.only("GET-200: GET request returns an array of comments for the specified article_id", () => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(response => {
+              console.log(response)
+            })
+        })
+        describe("/comments ERRORS", () => {
           it("POST-404: POST request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")

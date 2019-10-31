@@ -2,7 +2,8 @@ const {
   fetchArticles,
   fetchArticle,
   updateArticle,
-  addComment
+  addComment,
+  fetchComments
 } = require("../models/articlesModel.js")
 
 const getArticles = (req, res, next) => {
@@ -33,16 +34,27 @@ const patchArticleByArticleID = (req, res, next) => {
 const postCommentByArticleID = (req, res, next) => {
   const { article_id } = req.params
   const comment = req.body
-  addComment(article_id, comment).then(comment => {
-    console.log(comment)
-    res.status(201).json({ comment })
-  })
-  .catch(err => next(err))
+  addComment(article_id, comment)
+    .then(comment => {
+      console.log(comment)
+      res.status(201).json({ comment })
+    })
+    .catch(err => next(err))
+}
+
+const getCommentsByArticleID = (req, res, next) => {
+  const { article_id } = req.params
+  fetchComments(article_id)
+    .then(comments => {
+      res.status(200).json({ comments })
+    })
+    .catch(err => next(err))
 }
 
 module.exports = {
   getArticles,
   getArticleByArticleID,
   patchArticleByArticleID,
-  postCommentByArticleID
+  postCommentByArticleID,
+  getCommentsByArticleID
 }
