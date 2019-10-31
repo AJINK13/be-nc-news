@@ -241,6 +241,70 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at in descending order default when passed random queries", () => {
+      return request(app)
+        .get("/api/articles?abcdef=true&xyz=false")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
+    describe("/articles ERRORS", () => {
+      it("GET-400: GET request for invalid sortBy query returns status 400 (Bad Request)", () => {
+        return request(app)
+          .get("/api/articles?sortBy=abcdef")
+          .expect(400)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Bad Request: Column For sortBy Query Does Not Exist"
+            })
+          })
+      })
+      it("GET-400: GET request for invalid order query returns status 400 (Bad Request)", () => {
+        return request(app)
+          .get("/api/articles?order=abcdef")
+          .expect(400)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Bad Request: Invalid order Query"
+            })
+          })
+      })
+      it("GET-404: GET request for non-existing author query returns status 404 (Not Found)", () => {
+        return request(app)
+          .get("/api/articles?author=abcdef")
+          .expect(404)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Not Found: author Does Not Exist"
+            })
+          })
+      })
+      it("GET-404: GET request for non-existing topic query returns status 404 (Not Found)", () => {
+        return request(app)
+          .get("/api/articles?topic=abcdef")
+          .expect(404)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Not Found: topic Does Not Exist"
+            })
+          })
+      })
+    })
     describe("/:article_id", () => {
       it("GET-200: GET request returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)

@@ -1,20 +1,59 @@
 const connection = require("../db/connection.js")
 
 const fetchArticles = (sortBy, order, { author, topic }) => {
-  return connection
-    .select("articles.*")
-    .from("articles")
-    .count({ comment_count: "comments.article_id" })
-    .leftJoin("comments", "articles.article_id", "comments.article_id")
-    .groupBy("articles.article_id")
-    .orderBy(sortBy || "created_at", order || "desc")
-    .modify(query => {
-      if (author) {
-        query.where("articles.author", author)
-      } else if (topic) {
-        query.where("articles.topic", topic)
-      }
+  if (order !== undefined && order !== "asc" && order !== "desc") {
+    return Promise.reject({
+      status: 400,
+      message: "Bad Request: Invalid order Query"
     })
+  } else {
+    return connection
+      .select("articles.*")
+      .from("articles")
+      .count({ comment_count: "comments.article_id" })
+      .leftJoin("comments", "articles.article_id", "comments.article_id")
+      .groupBy("articles.article_id")
+      .orderBy(sortBy || "created_at", order || "desc")
+      .modify(query => {
+        if (author) {
+          query.where("articles.author", author)
+        } else if (topic) {
+          query.where("articles.topic", topic)
+        }
+      })
+      .then(articles => {
+        if (!articles.length) {
+          if (author) {
+            return connection
+              .select("*")
+              .from("users")
+              .where("username", author)
+              .then(([user]) => {
+                if (!user) {
+                  return Promise.reject({
+                    status: 404,
+                    message: "Not Found: author Does Not Exist"
+                  })
+                }
+              })
+          } else if (topic) {
+            return connection
+              .select("*")
+              .from("topics")
+              .where("slug", topic)
+              .then(([topic]) => {
+                if (!topic) {
+                  return Promise.reject({
+                    status: 404,
+                    message: "Not Found: topic Does Not Exist"
+                  })
+                }
+              })
+          }
+        }
+        return articles
+      })
+  }
 }
 
 const fetchArticle = article_id => {
