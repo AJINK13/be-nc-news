@@ -433,7 +433,7 @@ describe("/api", () => {
               .expect(400)
               .then(response => {
                 expect(response.body).to.deep.equal({
-                  Message: "Bad Request: Column For Query Does Not Exist"
+                  Message: "Bad Request: Column For sortBy Query Does Not Exist"
                 })
               })
           })
@@ -442,7 +442,6 @@ describe("/api", () => {
               .get("/api/articles/1/comments?order=abcdef")
               .expect(400)
               .then(response => {
-                console.log(response.body)
                 expect(response.body).to.deep.equal({
                   Message: "Bad Request: Invalid order Query"
                 })
