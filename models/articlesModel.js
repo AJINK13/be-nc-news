@@ -1,7 +1,20 @@
 const connection = require("../db/connection.js")
 
-const fetchArticles = () => {
-  return connection.select("*").from("articles")
+const fetchArticles = (sortBy, order, { author, topic }) => {
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .groupBy("articles.article_id")
+    .orderBy(sortBy || "created_at", order || "desc")
+    .modify(query => {
+      if (author) {
+        query.where("articles.author", author)
+      } else if (topic) {
+        query.where("articles.topic", topic)
+      }
+    })
 }
 
 const fetchArticle = article_id => {

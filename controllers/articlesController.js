@@ -7,9 +7,12 @@ const {
 } = require("../models/articlesModel.js")
 
 const getArticles = (req, res, next) => {
-  fetchArticles().then(articles => {
+  const { sortBy, order, ...otherQuery } = req.query
+  fetchArticles(sortBy, order, otherQuery).then(articles => {
+    console.log(articles)
     res.status(200).json({ articles })
   })
+  .catch(err => next(err))
 }
 
 const getArticleByArticleID = (req, res, next) => {

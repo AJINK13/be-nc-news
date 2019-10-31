@@ -14,29 +14,37 @@ describe("/api", () => {
   after(() => {
     return connection.destroy()
   })
-  it("GET-200: sends a message welcoming the user to our application", () => {
+  it("GET-200: GET request sends a message welcoming the user to our application", () => {
     return request(app)
       .get("/api")
       .expect(200)
       .then(response =>
         expect(response.body).to.deep.equal({
-          message: "Welcome to Our News Website"
+          Message: "Welcome to Our News Website"
         })
       )
   })
   describe("/topics", () => {
-    it("GET-200: returns all the topics", () => {
+    it("GET-200: GET request returns an array of all the topics", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
         .then(response => {
           expect(response.body.topics).to.have.length(3)
-          expect(response.body.topics[0]).to.have.keys("slug", "description")
+          expect(response.body.topics).to.be.an("array")
+          response.body.topics.forEach(topic => {
+            expect(topic).to.have.keys("slug", "description")
+          })
         })
+    })
+    describe("/topics ERRORS", () => {
+      it("DO ERRORS AFTER COMPLETING GET /api/articles", () => {
+        return request(app)
+      })
     })
   }) // END OF DESCRIBE TOPICS BLOCK
   describe("/users", () => {
-    it("GET-200: returns all the users", () => {
+    it("GET-200: GET request returns an array of all the users", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
@@ -49,7 +57,7 @@ describe("/api", () => {
         })
     })
     describe("/:username", () => {
-      it("GET-200: returns an user object for the specified username", () => {
+      it("GET-200: GET request returns an user object for the specified username", () => {
         return request(app)
           .get("/api/users/icellusedkars")
           .expect(200)
@@ -78,7 +86,7 @@ describe("/api", () => {
     }) // END OF DESCRIBE /:username BLOCK
   }) // END OF DESCRIBE USERS BLOCK
   describe("/articles", () => {
-    it("GET-200: returns all the articles", () => {
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -93,13 +101,148 @@ describe("/api", () => {
               "votes",
               "topic",
               "author",
-              "created_at"
+              "created_at",
+              "comment_count"
             )
           })
         })
     })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at in descending order", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by sortBy query in descending order", () => {
+      return request(app)
+        .get("/api/articles?sortBy=title")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.descendingBy("title")
+        })
+    })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at with sort query", () => {
+      return request(app)
+        .get("/api/articles?order=asc")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.ascendingBy("created_at")
+        })
+    })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by as specified in query", () => {
+      return request(app)
+        .get("/api/articles?sortBy=author&order=asc")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.ascendingBy("author")
+        })
+    })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by author query", () => {
+      return request(app)
+        .get("/api/articles?author=butter_bridge")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(3)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+            expect(article.author).to.equal("butter_bridge")
+          })
+          expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
+    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by topic query", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(1)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+            expect(article.topic).to.equal("cats")
+          })
+          expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
     describe("/:article_id", () => {
-      it("GET-200: returns an article object for the specified article_id along with comment_count key in the object", () => {
+      it("GET-200: GET request returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)
           .get("/api/articles/1")
           .expect(200)
@@ -117,7 +260,7 @@ describe("/api", () => {
             })
           })
       })
-      it("PATCH-200: returns an article object for the specified article_id along with the votes property updated according to the patch request", () => {
+      it("PATCH-200: PATCH request returns an article object for the specified article_id along with the votes property updated according to the patch request", () => {
         return request(app)
           .patch("/api/articles/1")
           .send({ inc_votes: 100 })
@@ -135,7 +278,7 @@ describe("/api", () => {
             })
           })
       })
-      it("PATCH-200: returns an article object for the specified article_id with the votes property not updated when inc_votes is not on the body", () => {
+      it("PATCH-200: PATCH request returns an article object for the specified article_id with the votes property not updated when inc_votes is not on the body", () => {
         return request(app)
           .patch("/api/articles/1")
           .send({ not_inc_votes: 100 })
