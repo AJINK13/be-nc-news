@@ -36,7 +36,6 @@ const postCommentByArticleID = (req, res, next) => {
   const comment = req.body
   addComment(article_id, comment)
     .then(comment => {
-      console.log(comment)
       res.status(201).json({ comment })
     })
     .catch(err => next(err))

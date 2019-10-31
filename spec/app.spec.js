@@ -43,11 +43,9 @@ describe("/api", () => {
         .then(response => {
           expect(response.body.users).to.have.length(4)
           expect(response.body.users).to.be.an("array")
-          expect(response.body.users[0]).to.have.keys(
-            "username",
-            "avatar_url",
-            "name"
-          )
+          response.body.users.forEach(user => {
+            expect(user).to.have.keys("username", "avatar_url", "name")
+          })
         })
     })
     describe("/:username", () => {
@@ -87,15 +85,17 @@ describe("/api", () => {
         .then(response => {
           expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
-          expect(response.body.articles[0]).to.have.keys(
-            "article_id",
-            "title",
-            "body",
-            "votes",
-            "topic",
-            "author",
-            "created_at"
-          )
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at"
+            )
+          })
         })
     })
     describe("/:article_id", () => {
@@ -325,7 +325,7 @@ describe("/api", () => {
               expect(response.body.comments).to.be.ascendingBy("comment_id")
             })
         })
-        describe.only("/comments ERRORS", () => {
+        describe("/comments ERRORS", () => {
           it("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")
