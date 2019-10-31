@@ -246,7 +246,10 @@ describe("/api", () => {
             .then(response => {
               expect(response.body.comments).to.have.length(13)
               expect(response.body.comments).to.be.an("array")
-              expect(response.body.comments[0]).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
+              response.body.comments.forEach(comment => {
+                expect(comment).to.have.keys("comment_id", "author", "article_id", "votes", "created_at", "body")
+                expect(comment.article_id).to.equal(1)
+              })
             })
         })
         describe("/comments ERRORS", () => {
