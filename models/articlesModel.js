@@ -73,28 +73,36 @@ addComment = (article_id, comment) => {
 }
 
 fetchComments = (article_id, sortBy, order) => {
-  return connection
-    .select("*")
-    .from("comments")
-    .where("article_id", article_id)
-    .orderBy(sortBy || "created_at", order || "desc")
-    .then(comments => {
-      if (!comments.length) {
-        return connection
-          .select("*")
-          .from("articles")
-          .where("article_id", article_id)
-          .then(([article]) => {
-            if(!article) {
-              return Promise.reject({
-                status: 404,
-                message: "Not Found: Valid Input Syntax For article_id But Does Not Exist"
-              })
-            }
-          })
-      }
-      return comments
+  if (order !== undefined && order !== "asc" && order !== "desc") {
+    return Promise.reject({
+      status: 400,
+      message: "Bad Request: Invalid order Query"
     })
+  } else {
+    return connection
+      .select("*")
+      .from("comments")
+      .where("article_id", article_id)
+      .orderBy(sortBy || "created_at", order || "desc")
+      .then(comments => {
+        if (!comments.length) {
+          return connection
+            .select("*")
+            .from("articles")
+            .where("article_id", article_id)
+            .then(([article]) => {
+              if (!article) {
+                return Promise.reject({
+                  status: 404,
+                  message:
+                    "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+                })
+              }
+            })
+        }
+        return comments
+      })
+  }
 }
 
 module.exports = {

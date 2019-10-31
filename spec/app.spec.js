@@ -405,7 +405,7 @@ describe("/api", () => {
                 })
               })
           })
-          it.only("GET-404: GET request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
+          it("GET-404: GET request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .get("/api/articles/999/comments")
               .expect(404)
@@ -413,6 +413,38 @@ describe("/api", () => {
                 expect(response.body).to.deep.equal({
                   Message:
                     "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+                })
+              })
+          })
+          it("GET-404: GET request for invalid syntax for article_id returns status 400 (Bad Request)", () => {
+            return request(app)
+              .get("/api/articles/abcdef/comments")
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message:
+                    "Bad Request: Invalid Input Syntax - Expected Integer"
+                })
+              })
+          })
+          it("GET-400: GET request for invalid sortBy query returns status 400 (Bad Request)", () => {
+            return request(app)
+              .get("/api/articles/1/comments?sortBy=abcdef")
+              .expect(400)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message: "Bad Request: Column For Query Does Not Exist"
+                })
+              })
+          })
+          it("GET-400: GET request for invalid order query returns status 400 (Bad Request)", () => {
+            return request(app)
+              .get("/api/articles/1/comments?order=abcdef")
+              .expect(400)
+              .then(response => {
+                console.log(response.body)
+                expect(response.body).to.deep.equal({
+                  Message: "Bad Request: Invalid order Query"
                 })
               })
           })

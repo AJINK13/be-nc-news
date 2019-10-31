@@ -8,6 +8,10 @@ const psqlErr = (err, req, res, next) => {
     "23503": {
       status: 404,
       message: "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+    },
+    "42703": {
+      status: 400,
+      message: "Bad Request: Column For sortBy Query Does Not Exist"
     }
   }
   const psqlError = psqlCode[err.code]
