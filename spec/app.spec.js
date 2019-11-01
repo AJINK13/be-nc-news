@@ -19,7 +19,6 @@ describe("/api", () => {
       .get("/api")
       .expect(200)
       .then(response => {
-        console.log(response.body.endpoints)
         expect(response.body.endpoints).to.be.an("object")
         expect(response.body.endpoints).to.deep.equal({
           "GET /api": {
@@ -84,6 +83,19 @@ describe("/api", () => {
                   body: "This article is amazing"
                 }
               ]
+            }
+          },
+          "GET /api/users/:username": {
+            description:
+              "serves an object for an user for the specified username",
+            queries: [],
+            exampleResponse: {
+              user: {
+                username: "hello123",
+                avatar_url:
+                  "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                name: "northcoders_liam"
+              }
             }
           },
           "GET /api/articles/:article_id": {
