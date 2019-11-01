@@ -14,15 +14,32 @@ describe("/api", () => {
   after(() => {
     return connection.destroy()
   })
-  it("GET-200: GET request sends a message welcoming the user to our application", () => {
+  it("GET-200: GET request returns a JSON object describing all the available routes on the API", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then(response =>
+      .then(response => {
+        console.log(response)
         expect(response.body).to.deep.equal({
           Message: "Welcome to Our News Website"
         })
-      )
+      })
+  })
+  describe("/api ERRORS", () => {
+    it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+      const invalidMethods = ["patch", "post", "put", "delete"]
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api")
+          .expect(405)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Method Not Allowed"
+            })
+          })
+      })
+      return Promise.all(methodPromises)
+    })
   })
   describe("/topics", () => {
     it("GET-200: GET request returns an array of all the topics", () => {
@@ -905,21 +922,7 @@ describe("/api", () => {
       })
     }) // END OF /:comment_id BLOCK
   }) // END OF DESCRIBE COMMENTS BLOCK
-  describe.only("GENERAL ERRORS", () => {
-    it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
-      const invalidMethods = ["patch", "post", "put", "delete"]
-      const methodPromises = invalidMethods.map(method => {
-        return request(app)
-          [method]("/api")
-          .expect(405)
-          .then(response => {
-            expect(response.body).to.deep.equal({
-              Message: "Method Not Allowed"
-            })
-          })
-      })
-      return Promise.all(methodPromises)
-    })
+  describe("ROUTING ERROR", () => {
     it("METHOD-404: Any METHOD for invalid route returns status 404 (Not Found)", () => {
       return request(app)
         .delete("/abcdef")
