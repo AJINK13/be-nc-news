@@ -809,6 +809,27 @@ describe("/api", () => {
               expect(response.body.comments).to.be.ascendingBy("comment_id")
             })
         })
+        it("GET-200: GET request returns an array of comments for the specified aricle_id which is default sorted by created_at in descending order when passed random queries", () => {
+          return request(app)
+            .get("/api/articles/1/comments?abcdef=true&xyz=false")
+            .expect(200)
+            .then(response => {
+              expect(response.body.comments).to.have.length(13)
+              expect(response.body.comments).to.be.an("array")
+              response.body.comments.forEach(comment => {
+                expect(comment).to.have.keys(
+                  "comment_id",
+                  "author",
+                  "article_id",
+                  "votes",
+                  "created_at",
+                  "body"
+                )
+                expect(comment.article_id).to.equal(1)
+              })
+              expect(response.body.comments).to.be.descendingBy("created_at")
+            })
+        })
         it("GET-200: GET request returns an empty array when the article exists but has no comments", () => {
           return request(app)
             .get("/api/articles/2/comments")
