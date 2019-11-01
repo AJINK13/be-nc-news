@@ -741,4 +741,61 @@ describe("/api", () => {
       }) // END OF DESCRIBE /comments
     }) // END OF DESCRIBE /:article_id
   }) // END OF DESCRIBE ARTICLES BLOCK
+  describe.only("/comments", () => {
+    it("GET-200: GET request returns an array of all the comments", () => {
+      return request(app)
+        .get("/api/comments")
+        .expect(200)
+        .then(response => {
+          expect(response.body.comments).to.have.length(18)
+          expect(response.body.comments).to.be.an("array")
+          response.body.comments.forEach(comment => {
+            expect(comment).to.have.keys(
+              "comment_id",
+              "author",
+              "article_id",
+              "votes",
+              "created_at",
+              "body"
+            )
+          })
+        })
+    })
+    describe("/comments ERRORS", () => {
+      it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+        const invalidMethods = ["patch", "post", "put", "delete"]
+        const methodPromises = invalidMethods.map(method => {
+          return request(app)
+            [method]("/api/comments")
+            .expect(405)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Method Not Allowed"
+              })
+            })
+        })
+        return Promise.all(methodPromises)
+      })
+    })
+    describe("/:comment_id", () => {
+      it("PATCH-200: PATCH request returns a comment object for the specified comment_id along with the votes property updated according to the patch request", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: 100 })
+          .expect(200)
+          .then(response => {
+            expect(response.body.comment).to.be.an("object")
+            expect(response.body.comment).to.deep.equal({
+              comment_id: 1,
+              author: "butter_bridge",
+              article_id: 9,
+              votes: 116,
+              created_at: "2017-11-22T12:36:03.389Z",
+              body:
+                "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+            })
+          })
+      })
+    })
+  }) // END OF DESCRIBE COMMENTS BLOCK
 }) // END OF DESCRIBE API BLOCK
