@@ -1,5 +1,8 @@
-const welcomeMessage = (req, res, next) => {
-  res.status(200).json({ Message: "Welcome to Our News Website" }) // DON'T NEED THIS. SEE README
+const endpoints = require("../endpoints.json")
+
+const getEndpoints = (req, res, next) => {
+  // console.log(endpoints)
+  res.status(200).json({ endpoints })
 }
 
-module.exports = welcomeMessage
+module.exports = getEndpoints

@@ -14,14 +14,39 @@ describe("/api", () => {
   after(() => {
     return connection.destroy()
   })
-  it("GET-200: GET request returns a JSON object describing all the available routes on the API", () => {
+  it.only("GET-200: GET request returns a JSON object describing all the available routes on the API", () => {
     return request(app)
       .get("/api")
       .expect(200)
       .then(response => {
-        console.log(response)
-        expect(response.body).to.deep.equal({
-          Message: "Welcome to Our News Website"
+        console.log(response.body.endpoints)
+        expect(response.body.endpoints).to.deep.equal({
+          "GET /api": {
+            description:
+              "serves up a json representation of all the available endpoints of the api"
+          },
+          "GET /api/topics": {
+            description: "serves an array of all topics",
+            queries: [],
+            exampleResponse: {
+              topics: [{ slug: "football", description: "Footie!" }]
+            }
+          },
+          "GET /api/articles": {
+            description: "serves an array of all topics",
+            queries: ["author", "topic", "sort_by", "order"],
+            exampleResponse: {
+              articles: [
+                {
+                  title: "Seafood substitutions are increasing",
+                  topic: "cooking",
+                  author: "weegembump",
+                  body: "Text from the article..",
+                  created_at: 1527695953341
+                }
+              ]
+            }
+          }
         })
       })
   })

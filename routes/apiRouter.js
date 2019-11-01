@@ -3,12 +3,12 @@ const topicsRouter = require("../routes/topicsRouter.js")
 const usersRouter = require("../routes/usersRouter.js")
 const articlesRouter = require("../routes/articlesRouter.js")
 const commentsRouter = require("../routes/commentsRouter.js")
-const welcomeMessage = require("../controllers/apiController.js")
+const getEndpoints = require("../controllers/apiController.js")
 const methodErr = require("../errors/methodErr.js")
 
 apiRouter
   .route("/")
-  .get(welcomeMessage)
+  .get(getEndpoints)
   .all(methodErr)
 
 apiRouter.use("/topics", topicsRouter)
