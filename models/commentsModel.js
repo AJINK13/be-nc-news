@@ -30,12 +30,26 @@ const updateComment = (comment_id, patchVote) => {
     })
 }
 
-const removeComment = (comment_id) => {
+const removeComment = comment_id => {
   return connection
     .first("*")
     .from("comments")
     .where("comments.comment_id", comment_id)
-    .del()
+    .then(comment_id => {
+      if (!comment_id) {
+        return Promise.reject({
+          status: 404,
+          message: "Not Found: Valid Input Syntax But Does Not Exist"
+        })
+      }
+    })
+    .then(() => {
+      return connection
+        .first("*")
+        .from("comments")
+        .where("comments.comment_id", comment_id)
+        .del()
+    })
 }
 
 module.exports = { fetchComments, updateComment, removeComment }

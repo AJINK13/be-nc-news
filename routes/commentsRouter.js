@@ -15,5 +15,6 @@ commentsRouter
   .route("/:comment_id")
   .patch(patchCommentByCommentID)
   .delete(deleteCommentByCommentID)
+  .all(methodErr)
 
 module.exports = commentsRouter

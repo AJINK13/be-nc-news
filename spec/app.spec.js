@@ -819,7 +819,21 @@ describe("/api", () => {
           .delete("/api/comments/1")
           .expect(204)
       })
-      describe("/:comment_id ERRORS", () => {
+      describe.only("/:comment_id ERRORS", () => {
+        it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+          const invalidMethods = ["get", "post", "put"]
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/comments/1")
+              .expect(405)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message: "Method Not Allowed"
+                })
+              })
+          })
+          return Promise.all(methodPromises)
+        })
         it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {
           return request(app)
             .patch("/api/comments/1")
@@ -857,6 +871,26 @@ describe("/api", () => {
           return request(app)
             .patch("/api/comments/abcdef")
             .send({ inc_votes: 100 })
+            .expect(400)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+              })
+            })
+        })
+        it("DELETE-404: DELETE request for valid syntax for comment_id but the comment_id does not exist returns status 404 (Not Found)", () => {
+          return request(app)
+            .delete("/api/comments/999")
+            .expect(404)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+              })
+            })
+        })
+        it("DELETE-400: DELETE request for invalid syntax for comment_id returns 400 (Bad Request)", () => {
+          return request(app)
+            .delete("/api/comments/abcdef")
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
