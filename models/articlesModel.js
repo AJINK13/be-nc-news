@@ -1,6 +1,6 @@
 const connection = require("../db/connection.js")
 
-const fetchArticles = (sortBy, order, { author, topic }) => {
+const fetchArticles = (sort_by, order, { author, topic }) => {
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
@@ -13,7 +13,7 @@ const fetchArticles = (sortBy, order, { author, topic }) => {
       .count({ comment_count: "comments.article_id" })
       .leftJoin("comments", "articles.article_id", "comments.article_id")
       .groupBy("articles.article_id")
-      .orderBy(sortBy || "created_at", order || "desc")
+      .orderBy(sort_by || "created_at", order || "desc")
       .modify(query => {
         if (author) {
           query.where("articles.author", author)
@@ -122,7 +122,7 @@ addComment = (article_id, comment) => {
     })
 }
 
-fetchComments = (article_id, sortBy, order) => {
+fetchComments = (article_id, sort_by, order) => {
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
@@ -133,7 +133,7 @@ fetchComments = (article_id, sortBy, order) => {
       .select("*")
       .from("comments")
       .where("article_id", article_id)
-      .orderBy(sortBy || "created_at", order || "desc")
+      .orderBy(sort_by || "created_at", order || "desc")
       .then(comments => {
         if (!comments.length) {
           return connection

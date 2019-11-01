@@ -14,7 +14,7 @@ describe("/api", () => {
   after(() => {
     return connection.destroy()
   })
-  it.only("GET-200: GET request returns a JSON object describing all the available routes on the API", () => {
+  it("GET-200: GET request returns a JSON object describing all the available routes on the API", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -356,9 +356,9 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by sortBy query in descending order", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by sort_by query in descending order", () => {
       return request(app)
-        .get("/api/articles?sortBy=title")
+        .get("/api/articles?sort_by=title")
         .expect(200)
         .then(response => {
           expect(response.body.articles).to.have.length(12)
@@ -402,7 +402,7 @@ describe("/api", () => {
     })
     it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by as specified in query", () => {
       return request(app)
-        .get("/api/articles?sortBy=author&order=asc")
+        .get("/api/articles?sort_by=author&order=asc")
         .expect(200)
         .then(response => {
           expect(response.body.articles).to.have.length(12)
@@ -505,13 +505,13 @@ describe("/api", () => {
         })
         return Promise.all(methodPromises)
       })
-      it("GET-400: GET request for invalid sortBy query returns status 400 (Bad Request)", () => {
+      it("GET-400: GET request for invalid sort_by query returns status 400 (Bad Request)", () => {
         return request(app)
-          .get("/api/articles?sortBy=abcdef")
+          .get("/api/articles?sort_by=abcdef")
           .expect(400)
           .then(response => {
             expect(response.body).to.deep.equal({
-              Message: "Bad Request: Column For sortBy Query Does Not Exist"
+              Message: "Bad Request: Column For sort_by Query Does Not Exist"
             })
           })
       })
@@ -749,7 +749,7 @@ describe("/api", () => {
         })
         it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query in default descending order", () => {
           return request(app)
-            .get("/api/articles/1/comments?sortBy=comment_id")
+            .get("/api/articles/1/comments?sort_by=comment_id")
             .expect(200)
             .then(response => {
               expect(response.body.comments).to.have.length(13)
@@ -770,7 +770,7 @@ describe("/api", () => {
         })
         it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query", () => {
           return request(app)
-            .get("/api/articles/1/comments?sortBy=comment_id&order=asc")
+            .get("/api/articles/1/comments?sort_by=comment_id&order=asc")
             .expect(200)
             .then(response => {
               expect(response.body.comments).to.have.length(13)
@@ -905,13 +905,13 @@ describe("/api", () => {
                 })
               })
           })
-          it("GET-400: GET request for invalid sortBy query returns status 400 (Bad Request)", () => {
+          it("GET-400: GET request for invalid sort_by query returns status 400 (Bad Request)", () => {
             return request(app)
-              .get("/api/articles/1/comments?sortBy=abcdef")
+              .get("/api/articles/1/comments?sort_by=abcdef")
               .expect(400)
               .then(response => {
                 expect(response.body).to.deep.equal({
-                  Message: "Bad Request: Column For sortBy Query Does Not Exist"
+                  Message: "Bad Request: Column For sort_by Query Does Not Exist"
                 })
               })
           })

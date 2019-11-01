@@ -7,8 +7,8 @@ const {
 } = require("../models/articlesModel.js")
 
 const getArticles = (req, res, next) => {
-  const { sortBy, order, ...otherQuery } = req.query
-  fetchArticles(sortBy, order, otherQuery)
+  const { sort_by, order, ...otherQuery } = req.query
+  fetchArticles(sort_by, order, otherQuery)
     .then(articles => {
       res.status(200).json({ articles })
     })
@@ -46,8 +46,8 @@ const postCommentByArticleID = (req, res, next) => {
 
 const getCommentsByArticleID = (req, res, next) => {
   const { article_id } = req.params
-  const { sortBy, order } = req.query
-  fetchComments(article_id, sortBy, order)
+  const { sort_by, order } = req.query
+  fetchComments(article_id, sort_by, order)
     .then(comments => {
       res.status(200).json({ comments })
     })

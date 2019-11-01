@@ -10,7 +10,7 @@ const psqlErr = (err, req, res, next) => {
     },
     "42703": {
       status: 400,
-      message: "Bad Request: Column For sortBy Query Does Not Exist"
+      message: "Bad Request: Column For sort_by Query Does Not Exist"
     }
   }
   const psqlError = psqlCode[err.code]
