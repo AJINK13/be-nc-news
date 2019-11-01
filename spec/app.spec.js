@@ -151,6 +151,45 @@ describe("/api", () => {
                 body: "I feel really lucky today"
               }
             }
+          },
+          "GET /api/articles/:article_id/comments": {
+            description:
+              "serves an array of comments for the specified article_id",
+            queries: ["sort_by", "order"],
+            exampleResponse: {
+              comment: [
+                {
+                  comment_id: 3,
+                  author: "northcoders_mercy",
+                  article_id: 16,
+                  votes: 3,
+                  created_at: 1527695953345,
+                  body: "It's November"
+                }
+              ]
+            }
+          },
+          "PATCH /api/comments/:comment_id": {
+            description:
+              "serves an object for a comment for the specified comment_id with the votes property updated",
+            queries: [],
+            body: { inc_votes: 3 },
+            exampleResponse: {
+              comment: {
+                article_id: 2,
+                comment_id: 31,
+                body: "I am not happy about the cold weather",
+                votes: 3,
+                author: "santa",
+                created_at: 1527695953333
+              }
+            }
+          },
+          "DELETE /api/comments/:comment_id": {
+            description:
+              "nothing served with comment deleted for the specified comment_id",
+            queries: [],
+            exampleResponse: {}
           }
         })
       })
