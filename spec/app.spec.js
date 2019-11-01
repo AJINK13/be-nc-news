@@ -905,7 +905,7 @@ describe("/api", () => {
       })
     }) // END OF /:comment_id BLOCK
   }) // END OF DESCRIBE COMMENTS BLOCK
-  describe.only("GENERAL ERRORS", () => {
+  describe("GENERAL ERRORS", () => {
     it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
       const invalidMethods = ["patch", "post", "put", "delete"]
       const methodPromises = invalidMethods.map(method => {

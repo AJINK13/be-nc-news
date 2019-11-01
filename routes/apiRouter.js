@@ -3,12 +3,13 @@ const topicsRouter = require("../routes/topicsRouter.js")
 const usersRouter = require("../routes/usersRouter.js")
 const articlesRouter = require("../routes/articlesRouter.js")
 const commentsRouter = require("../routes/commentsRouter.js")
+const welcomeMessage = require("../controllers/apiController.js")
 const methodErr = require("../errors/methodErr.js")
 
-
-apiRouter.route("/").get((req, res, next) => {
-  res.status(200).json({ Message: "Welcome to Our News Website" }) // DON'T NEED THIS. SEE README
-}).all(methodErr)
+apiRouter
+  .route("/")
+  .get(welcomeMessage)
+  .all(methodErr)
 
 apiRouter.use("/topics", topicsRouter)
 apiRouter.use("/users", usersRouter)
