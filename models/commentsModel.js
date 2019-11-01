@@ -30,4 +30,12 @@ const updateComment = (comment_id, patchVote) => {
     })
 }
 
-module.exports = { fetchComments, updateComment }
+const removeComment = (comment_id) => {
+  return connection
+    .first("*")
+    .from("comments")
+    .where("comments.comment_id", comment_id)
+    .del()
+}
+
+module.exports = { fetchComments, updateComment, removeComment }

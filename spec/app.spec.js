@@ -741,7 +741,7 @@ describe("/api", () => {
       }) // END OF DESCRIBE /comments
     }) // END OF DESCRIBE /:article_id
   }) // END OF DESCRIBE ARTICLES BLOCK
-  describe.only("/comments", () => {
+  describe("/comments", () => {
     it("GET-200: GET request returns an array of all the comments", () => {
       return request(app)
         .get("/api/comments")
@@ -813,6 +813,11 @@ describe("/api", () => {
                 "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
             })
           })
+      })
+      it("DELETE-204: DELETE request returns status 204 (No Content)", () => {
+        return request(app)
+          .delete("/api/comments/1")
+          .expect(204)
       })
       describe("/:comment_id ERRORS", () => {
         it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {

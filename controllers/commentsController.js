@@ -1,4 +1,8 @@
-const { fetchComments, updateComment } = require("../models/commentsModel.js")
+const {
+  fetchComments,
+  updateComment,
+  removeComment
+} = require("../models/commentsModel.js")
 
 const getComments = (req, res, next) => {
   fetchComments()
@@ -13,10 +17,22 @@ const patchCommentByCommentID = (req, res, next) => {
   const patchVote = req.body
   updateComment(comment_id, patchVote)
     .then(comment => {
-      // console.log(comment)
       res.status(200).json({ comment })
     })
     .catch(err => next(err))
 }
 
-module.exports = { getComments, patchCommentByCommentID }
+const deleteCommentByCommentID = (req, res, next) => {
+  const { comment_id } = req.params
+  removeComment(comment_id)
+    .then(() => {
+      res.sendStatus(204)
+    })
+    .catch(err => next(err))
+}
+
+module.exports = {
+  getComments,
+  patchCommentByCommentID,
+  deleteCommentByCommentID
+}
