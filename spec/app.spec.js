@@ -436,7 +436,8 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
+                Message:
+                  "Not Found: Valid Input Syntax for article_id But Does Not Exist"
               })
             })
         })
@@ -480,7 +481,8 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
+                Message:
+                  "Not Found: Valid Input Syntax for article_id But Does Not Exist"
               })
             })
         })
@@ -863,7 +865,8 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
+                Message:
+                  "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
               })
             })
         })
@@ -884,7 +887,8 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
+                Message:
+                  "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
               })
             })
         })
@@ -901,4 +905,20 @@ describe("/api", () => {
       })
     }) // END OF /:comment_id BLOCK
   }) // END OF DESCRIBE COMMENTS BLOCK
+  describe.only("GENERAL ERRORS", () => {
+    it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+      const invalidMethods = ["patch", "post", "put", "delete"]
+      const methodPromises = invalidMethods.map(method => {
+        return request(app)
+          [method]("/api")
+          .expect(405)
+          .then(response => {
+            expect(response.body).to.deep.equal({
+              Message: "Method Not Allowed"
+            })
+          })
+      })
+      return Promise.all(methodPromises)
+    })
+  })
 }) // END OF DESCRIBE API BLOCK
