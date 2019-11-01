@@ -38,8 +38,19 @@ describe("/api", () => {
         })
     })
     describe("/topics ERRORS", () => {
-      it("DO ERRORS AFTER COMPLETING GET /api/articles", () => {
-        return request(app)
+      it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+        const invalidMethods = ["patch", "post", "put", "delete"]
+        const methodPromises = invalidMethods.map(method => {
+          return request(app)
+            [method]("/api/topics")
+            .expect(405)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Method Not Allowed"
+              })
+            })
+        })
+        return Promise.all(methodPromises)
       })
     })
   }) // END OF DESCRIBE TOPICS BLOCK

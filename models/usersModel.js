@@ -1,7 +1,7 @@
 const connection = require("../db/connection.js")
 
 const fetchUsers = () => {
-  return connection("users").select("*")
+  return connection.select("*").from("users")
 }
 
 const fetchUserByUsername = username => {
