@@ -89,7 +89,7 @@ describe("formatDates", () => {
         votes: 100
       }
     ]
-    inputCopy = [
+    const inputCopy = [
       {
         title: "Living in the shadow of a great man",
         topic: "mitch",
