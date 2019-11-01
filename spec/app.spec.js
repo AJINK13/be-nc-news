@@ -114,6 +114,24 @@ describe("/api", () => {
                 comment_count: 8
               }
             }
+          },
+          "PATCH /api/articles/:article_id": {
+            description:
+              "serves an object for an article for the specified article_id with the votes property updated",
+            queries: [],
+            body: { inc_votes: 10 },
+            exampleResponse: {
+              article: {
+                article_id: 17,
+                title: "Living in the shadow",
+                body: "I am scared",
+                votes: 88,
+                topic: "horror",
+                author: "weriop",
+                created_at: 1527695953343,
+                comment_count: 8
+              }
+            }
           }
         })
       })
