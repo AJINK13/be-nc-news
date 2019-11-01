@@ -30,9 +30,25 @@
     "exampleResponse": {
       "users": [
         {
-          "username": "butter_bridge",
+          "username": "this_is_a_username",
           "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-          "name": "jonny"
+          "name": "northcoders"
+        }
+      ]
+    }
+  },
+  "GET /api/comments": {
+    "description": "serves an array of all comments",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comments_id": "11",
+          "author": "northcoders",
+          "article_id": "20",
+          "votes": 250,
+          "created_at": 1527695953349,
+          "body": "This article is amazing"
         }
       ]
     }
