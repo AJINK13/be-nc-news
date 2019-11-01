@@ -819,7 +819,7 @@ describe("/api", () => {
           .delete("/api/comments/1")
           .expect(204)
       })
-      describe.only("/:comment_id ERRORS", () => {
+      describe("/:comment_id ERRORS", () => {
         it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
           const invalidMethods = ["get", "post", "put"]
           const methodPromises = invalidMethods.map(method => {
@@ -899,6 +899,6 @@ describe("/api", () => {
             })
         })
       })
-    })
+    }) // END OF /:comment_id BLOCK
   }) // END OF DESCRIBE COMMENTS BLOCK
 }) // END OF DESCRIBE API BLOCK
