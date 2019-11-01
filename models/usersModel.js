@@ -4,7 +4,7 @@ const fetchUsers = () => {
   return connection.select("*").from("users")
 }
 
-const fetchUserByUsername = username => {
+const fetchUser = username => {
   return connection("users")
     .first("*")
     .where("username", username)
@@ -20,4 +20,4 @@ const fetchUserByUsername = username => {
     })
 }
 
-module.exports = { fetchUsers, fetchUserByUsername }
+module.exports = { fetchUsers, fetchUser }
