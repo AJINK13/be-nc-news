@@ -445,6 +445,16 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
+    it("GET-200: GET request returns an empty array when the author exists but has no articles", () => {
+      return request(app)
+        .get("/api/articles?author=lurker")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(0)
+          expect(response.body.articles).to.be.an("array")
+          expect(response.body.articles).to.deep.equal([])
+        })
+    })
     it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by topic query", () => {
       return request(app)
         .get("/api/articles?topic=cats")
@@ -466,6 +476,16 @@ describe("/api", () => {
             expect(article.topic).to.equal("cats")
           })
           expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
+    it("GET-200: GET request returns an empty array when the topic exists but has no articles", () => {
+      return request(app)
+        .get("/api/articles?topic=paper")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(0)
+          expect(response.body.articles).to.be.an("array")
+          expect(response.body.articles).to.deep.equal([])
         })
     })
     it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at in descending order when passed random queries", () => {
@@ -787,6 +807,16 @@ describe("/api", () => {
                 expect(comment.article_id).to.equal(1)
               })
               expect(response.body.comments).to.be.ascendingBy("comment_id")
+            })
+        })
+        it("GET-200: GET request returns an empty array when the article exists but has no comments", () => {
+          return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(response => {
+              expect(response.body.comments).to.have.length(0)
+              expect(response.body.comments).to.be.an("array")
+              expect(response.body.comments).to.deep.equal([])
             })
         })
         describe("/comments ERRORS", () => {
