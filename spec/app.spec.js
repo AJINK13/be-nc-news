@@ -128,8 +128,27 @@ describe("/api", () => {
                 votes: 88,
                 topic: "horror",
                 author: "weriop",
-                created_at: 1527695953343,
+                created_at: 1527695953342,
                 comment_count: 8
+              }
+            }
+          },
+          "POST /api/articles/:article_id/comments": {
+            description:
+              "serves an object of the posted comment for the specified article_id",
+            queries: [],
+            body: {
+              username: "northcoders_kim",
+              body: "I feel really lucky today"
+            },
+            exampleResponse: {
+              comment: {
+                comment_id: 57,
+                author: "northcoders_kim",
+                article_id: 77,
+                votes: 0,
+                created_at: 1527695953349,
+                body: "I feel really lucky today"
               }
             }
           }
