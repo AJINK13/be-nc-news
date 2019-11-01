@@ -905,7 +905,7 @@ describe("/api", () => {
       })
     }) // END OF /:comment_id BLOCK
   }) // END OF DESCRIBE COMMENTS BLOCK
-  describe("GENERAL ERRORS", () => {
+  describe.only("GENERAL ERRORS", () => {
     it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
       const invalidMethods = ["patch", "post", "put", "delete"]
       const methodPromises = invalidMethods.map(method => {
@@ -919,6 +919,16 @@ describe("/api", () => {
           })
       })
       return Promise.all(methodPromises)
+    })
+    it("METHOD-404: Any METHOD for invalid route returns status 404 (Not Found)", () => {
+      return request(app)
+        .delete("/abcdef")
+        .expect(404)
+        .then(response => {
+          expect(response.body).to.deep.equal({
+            Message: "Not Found: Invalid Route"
+          })
+        })
     })
   })
 }) // END OF DESCRIBE API BLOCK
