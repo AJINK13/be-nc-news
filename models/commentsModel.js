@@ -6,6 +6,7 @@ const fetchComments = () => {
 
 const updateComment = (comment_id, patchVote) => {
   let updateVote = patchVote.inc_votes
+  if (!patchVote.inc_votes) updateVote = 0
   return connection
     .from("comments")
     .where("comments.comment_id", comment_id)

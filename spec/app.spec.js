@@ -400,7 +400,7 @@ describe("/api", () => {
       it("PATCH-200: PATCH request returns an article object for the specified article_id with the votes property not updated when inc_votes is not on the body", () => {
         return request(app)
           .patch("/api/articles/1")
-          .send({ not_inc_votes: 100 })
+          .send({ abcdef: 100 })
           .expect(200)
           .then(response => {
             expect(response.body.article).to.be.an("object")
@@ -430,7 +430,7 @@ describe("/api", () => {
           })
           return Promise.all(methodPromises)
         })
-        it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
+        it("GET-404: GET request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/articles/999")
             .expect(404)
@@ -440,7 +440,7 @@ describe("/api", () => {
               })
             })
         })
-        it("GET-400: GET request for invalid syntax for username returns status 400 (Bad Request)", () => {
+        it("GET-400: GET request for invalid syntax for article_id returns status 400 (Bad Request)", () => {
           return request(app)
             .get("/api/articles/abcdef")
             .expect(400)
@@ -453,7 +453,7 @@ describe("/api", () => {
         it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {
           return request(app)
             .patch("/api/articles/1")
-            .send({ inc_votes: "not-a-number" })
+            .send({ inc_votes: "abcdef" })
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
@@ -464,7 +464,7 @@ describe("/api", () => {
         it("PATCH-400: PATCH request for multiple items on request body returns status 400 (Bad Request)", () => {
           return request(app)
             .patch("/api/articles/1")
-            .send({ inc_votes: 100, not_inc_votes: 100 })
+            .send({ inc_votes: 100, abcdef: 100 })
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
@@ -795,6 +795,36 @@ describe("/api", () => {
                 "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
             })
           })
+      })
+      it("PATCH-200: PATCH request returns a comment object for the specified comment_id with the votes property not updated when inc_votes is not on the body", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ abcdef: 100 })
+          .expect(200)
+          .then(response => {
+            expect(response.body.comment).to.be.an("object")
+            expect(response.body.comment).to.deep.equal({
+              comment_id: 1,
+              author: "butter_bridge",
+              article_id: 9,
+              votes: 16,
+              created_at: "2017-11-22T12:36:03.389Z",
+              body:
+                "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+            })
+          })
+      })
+      describe.only("/:comment_id ERRORS", () => {
+        it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {
+          return request(app)
+            .patch("/api/comments/1")
+            .send({ inc_votes: "abcdef" })
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+              })
+            })
+        })
       })
     })
   }) // END OF DESCRIBE COMMENTS BLOCK
