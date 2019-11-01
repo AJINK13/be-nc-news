@@ -30,7 +30,12 @@ describe("/api", () => {
             description: "serves an array of all topics",
             queries: [],
             exampleResponse: {
-              topics: [{ slug: "football", description: "Footie!" }]
+              topics: [
+                {
+                  slug: "football",
+                  description: "Footie!"
+                }
+              ]
             }
           },
           "GET /api/articles": {
@@ -39,11 +44,14 @@ describe("/api", () => {
             exampleResponse: {
               articles: [
                 {
+                  article_id: 13,
                   title: "Seafood substitutions are increasing",
                   topic: "cooking",
                   author: "weegembump",
                   body: "Text from the article..",
-                  created_at: 1527695953341
+                  created_at: 1527695953341,
+                  comment_count: 45,
+                  votes: 19
                 }
               ]
             }
@@ -57,7 +65,7 @@ describe("/api", () => {
                   username: "this_is_a_username",
                   avatar_url:
                     "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-                  name: "northcoders"
+                  name: "northcoders_shaq"
                 }
               ]
             }
@@ -76,6 +84,23 @@ describe("/api", () => {
                   body: "This article is amazing"
                 }
               ]
+            }
+          },
+          "GET /api/articles/:article_id": {
+            description:
+              "serves an object for an article for the specified article_id",
+            queries: ["article_id"],
+            exampleResponse: {
+              article: {
+                article_id: 17,
+                title: "Living in the shadow",
+                body: "I am scared",
+                votes: 78,
+                topic: "horror",
+                author: "weriop",
+                created_at: 1527695953343,
+                comment_count: 8
+              }
             }
           }
         })
