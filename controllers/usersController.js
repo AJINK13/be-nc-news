@@ -1,10 +1,12 @@
 const { fetchUsers, fetchUser } = require("../models/usersModel.js")
 
 const getUsers = (req, res, next) => {
-  fetchUsers().then(users => {
-    res.status(200).json({ users })
-  })
-  .catch(err => next(err))
+  fetchUsers()
+    .then(users => {
+      console.log(users)
+      res.status(200).json({ users })
+    })
+    .catch(err => next(err))
 }
 
 const getUserByUsername = (req, res, next) => {

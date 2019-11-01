@@ -20,6 +20,7 @@ describe("/api", () => {
       .expect(200)
       .then(response => {
         console.log(response.body.endpoints)
+        expect(response.body.endpoints).to.be.an("object")
         expect(response.body.endpoints).to.deep.equal({
           "GET /api": {
             description:
@@ -43,6 +44,20 @@ describe("/api", () => {
                   author: "weegembump",
                   body: "Text from the article..",
                   created_at: 1527695953341
+                }
+              ]
+            }
+          },
+          "GET /api/users": {
+            description: "serves an array of all users",
+            queries: [],
+            exampleResponse: {
+              users: [
+                {
+                  username: "butter_bridge",
+                  avatar_url:
+                    "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                  name: "jonny"
                 }
               ]
             }
