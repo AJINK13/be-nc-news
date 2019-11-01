@@ -23,7 +23,7 @@ const updateComment = (comment_id, patchVote) => {
       if (!comment) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax But Does Not Exist"
+          message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
         })
       }
       return comment
@@ -39,7 +39,7 @@ const removeComment = comment_id => {
       if (!comment_id) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax But Does Not Exist"
+          message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
         })
       }
     })

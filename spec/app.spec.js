@@ -119,7 +119,7 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: username Does Not Exist"
               })
             })
         })
@@ -436,7 +436,7 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
               })
             })
         })
@@ -480,7 +480,7 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
               })
             })
         })
@@ -863,7 +863,7 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
               })
             })
         })
@@ -884,7 +884,7 @@ describe("/api", () => {
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+                Message: "Not Found: Valid Input Syntax for comment_id But Does Not Exist"
               })
             })
         })

@@ -12,7 +12,7 @@ const fetchUser = username => {
       if (!username) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax But Does Not Exist"
+          message: "Not Found: username Does Not Exist"
         })
       } else {
         return username

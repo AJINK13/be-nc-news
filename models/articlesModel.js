@@ -68,11 +68,10 @@ const fetchArticle = article_id => {
       if (!article) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax But Does Not Exist"
+          message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
         })
-      } else {
-        return article
       }
+      return article
     })
 }
 
@@ -95,7 +94,7 @@ const updateArticle = (article_id, patchVote) => {
       if (!article) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax But Does Not Exist"
+          message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
         })
       }
       return article
