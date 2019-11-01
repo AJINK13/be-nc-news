@@ -13,7 +13,7 @@ const patchCommentByCommentID = (req, res, next) => {
   const patchVote = req.body
   updateComment(comment_id, patchVote)
     .then(comment => {
-      console.log(comment)
+      // console.log(comment)
       res.status(200).json({ comment })
     })
     .catch(err => next(err))

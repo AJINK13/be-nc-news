@@ -7,13 +7,26 @@ const fetchComments = () => {
 const updateComment = (comment_id, patchVote) => {
   let updateVote = patchVote.inc_votes
   if (!patchVote.inc_votes) updateVote = 0
+  if (Object.keys(patchVote).length !== 1) {
+    return Promise.reject({
+      status: 400,
+      message:
+        "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
+    })
+  }
   return connection
     .from("comments")
     .where("comments.comment_id", comment_id)
     .increment("votes", updateVote)
     .returning("*")
     .then(([comment]) => {
-        return comment
+      if (!comment) {
+        return Promise.reject({
+          status: 404,
+          message: "Not Found: Valid Input Syntax But Does Not Exist"
+        })
+      }
+      return comment
     })
 }
 

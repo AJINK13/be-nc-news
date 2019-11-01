@@ -814,11 +814,45 @@ describe("/api", () => {
             })
           })
       })
-      describe.only("/:comment_id ERRORS", () => {
+      describe("/:comment_id ERRORS", () => {
         it("PATCH-400: PATCH request for invalid syntax for inc_votes returns status 400 (Bad Request)", () => {
           return request(app)
             .patch("/api/comments/1")
             .send({ inc_votes: "abcdef" })
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Bad Request: Invalid Input Syntax - Expected Integer"
+              })
+            })
+        })
+        it("PATCH-400: PATCH request for multiple items on request body return status 400 (Bad Request", () => {
+          return request(app)
+            .patch("/api/comments/1")
+            .send({ inc_votes: 100, abcdef: 100 })
+            .expect(400)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message:
+                  "Bad Request: 'inc_votes: value' Must Be The Only Key-Value Pair On Request Body"
+              })
+            })
+        })
+        it("PATCH-404: PATCH request for valid syntax for comment_id but the comment_id does not exist returns status 404 (Not Found)", () => {
+          return request(app)
+            .patch("/api/comments/999")
+            .send({ inc_votes: 100 })
+            .expect(404)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Not Found: Valid Input Syntax But Does Not Exist"
+              })
+            })
+        })
+        it("PATCH-400: PATCH request for invalid syntax for comment_id returns 400 (Bad Request)", () => {
+          return request(app)
+            .patch("/api/comments/abcdef")
+            .send({ inc_votes: 100 })
+            .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
                 Message: "Bad Request: Invalid Input Syntax - Expected Integer"

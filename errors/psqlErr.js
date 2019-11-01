@@ -1,5 +1,5 @@
 const psqlErr = (err, req, res, next) => {
-  console.log(err)
+  // console.log(err)
   const psqlCode = {
     "22P02": {
       status: 400,

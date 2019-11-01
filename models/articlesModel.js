@@ -97,9 +97,8 @@ const updateArticle = (article_id, patchVote) => {
           status: 404,
           message: "Not Found: Valid Input Syntax But Does Not Exist"
         })
-      } else {
-        return article
       }
+      return article
     })
 }
 
