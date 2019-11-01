@@ -35,6 +35,7 @@ const fetchArticles = (sort_by, order, { author, topic }) => {
                     message: "Not Found: author Does Not Exist"
                   })
                 }
+                return []
               })
           } else if (topic) {
             return connection
@@ -48,6 +49,7 @@ const fetchArticles = (sort_by, order, { author, topic }) => {
                     message: "Not Found: topic Does Not Exist"
                   })
                 }
+                return []
               })
           }
         }
@@ -148,6 +150,7 @@ fetchComments = (article_id, sort_by, order) => {
                     "Not Found: Valid Input Syntax For article_id But Does Not Exist"
                 })
               }
+              return []
             })
         }
         return comments
