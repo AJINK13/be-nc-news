@@ -67,6 +67,22 @@ describe("/api", () => {
           })
         })
     })
+    describe("/users ERRORS", () => {
+      it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+        const invalidMethods = ["patch", "post", "put", "delete"]
+        const methodPromises = invalidMethods.map(method => {
+          return request(app)
+            [method]("/api/users")
+            .expect(405)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Method Not Allowed"
+              })
+            })
+        })
+        return Promise.all(methodPromises)
+      })
+    })
     describe("/:username", () => {
       it("GET-200: GET request returns an user object for the specified username", () => {
         return request(app)
@@ -83,6 +99,20 @@ describe("/api", () => {
           })
       })
       describe("/:username ERRORS", () => {
+        it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+          const invalidMethods = ["patch", "post", "put", "delete"]
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/users/icellusedkars")
+              .expect(405)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message: "Method Not Allowed"
+                })
+              })
+          })
+          return Promise.all(methodPromises)
+        })
         it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/users/not-a-user")
@@ -97,7 +127,7 @@ describe("/api", () => {
     }) // END OF DESCRIBE /:username BLOCK
   }) // END OF DESCRIBE USERS BLOCK
   describe("/articles", () => {
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -118,7 +148,7 @@ describe("/api", () => {
           })
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at in descending order", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at in descending order", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -140,7 +170,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by sortBy query in descending order", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by sortBy query in descending order", () => {
       return request(app)
         .get("/api/articles?sortBy=title")
         .expect(200)
@@ -162,7 +192,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("title")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at with sort query", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at with sort query", () => {
       return request(app)
         .get("/api/articles?order=asc")
         .expect(200)
@@ -184,7 +214,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.ascendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by as specified in query", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by as specified in query", () => {
       return request(app)
         .get("/api/articles?sortBy=author&order=asc")
         .expect(200)
@@ -206,7 +236,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.ascendingBy("author")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by author query", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by author query", () => {
       return request(app)
         .get("/api/articles?author=butter_bridge")
         .expect(200)
@@ -229,7 +259,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and sorted by topic query", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by topic query", () => {
       return request(app)
         .get("/api/articles?topic=cats")
         .expect(200)
@@ -252,7 +282,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles along with each article having a comment_count key-value and default sorted by created_at in descending order default when passed random queries", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at in descending order when passed random queries", () => {
       return request(app)
         .get("/api/articles?abcdef=true&xyz=false")
         .expect(200)
@@ -275,6 +305,20 @@ describe("/api", () => {
         })
     })
     describe("/articles ERRORS", () => {
+      it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+        const invalidMethods = ["patch", "post", "put", "delete"]
+        const methodPromises = invalidMethods.map(method => {
+          return request(app)
+            [method]("/api/articles")
+            .expect(405)
+            .then(response => {
+              expect(response.body).to.deep.equal({
+                Message: "Method Not Allowed"
+              })
+            })
+        })
+        return Promise.all(methodPromises)
+      })
       it("GET-400: GET request for invalid sortBy query returns status 400 (Bad Request)", () => {
         return request(app)
           .get("/api/articles?sortBy=abcdef")
@@ -372,6 +416,20 @@ describe("/api", () => {
           })
       })
       describe("/:article_id ERRORS", () => {
+        it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+          const invalidMethods = ["post", "put", "delete"]
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]("/api/articles/1")
+              .expect(405)
+              .then(response => {
+                expect(response.body).to.deep.equal({
+                  Message: "Method Not Allowed"
+                })
+              })
+          })
+          return Promise.all(methodPromises)
+        })
         it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
             .get("/api/articles/999")
@@ -522,7 +580,7 @@ describe("/api", () => {
               expect(response.body.comments).to.be.descendingBy("comment_id")
             })
         })
-        it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query in default descending order", () => {
+        it("GET-200: GET request returns an array of comments for the specifed article_id sorted by as specified in the query", () => {
           return request(app)
             .get("/api/articles/1/comments?sortBy=comment_id&order=asc")
             .expect(200)
@@ -544,6 +602,20 @@ describe("/api", () => {
             })
         })
         describe("/comments ERRORS", () => {
+          it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
+            const invalidMethods = ["patch", "put", "delete"]
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]("/api/articles/1/comments")
+                .expect(405)
+                .then(response => {
+                  expect(response.body).to.deep.equal({
+                    Message: "Method Not Allowed"
+                  })
+                })
+            })
+            return Promise.all(methodPromises)
+          })
           it("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")
