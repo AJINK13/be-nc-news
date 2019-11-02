@@ -301,7 +301,7 @@ describe("/api", () => {
         })
         it("GET-404: GET request for valid syntax for username but the username does not exist returns status 404 (Not Found)", () => {
           return request(app)
-            .get("/api/users/not-a-user")
+            .get("/api/users/abcdef")
             .expect(404)
             .then(response => {
               expect(response.body).to.deep.equal({
@@ -378,7 +378,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("title")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at with sort query", () => {
+    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at with order query", () => {
       return request(app)
         .get("/api/articles?order=asc")
         .expect(200)
