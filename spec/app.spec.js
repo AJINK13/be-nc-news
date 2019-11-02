@@ -334,7 +334,7 @@ describe("/api", () => {
           })
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at in descending order", () => {
+    it("GET-200: GET request returns an array of all the articles and default sorted by created_at in descending order", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -356,7 +356,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by sort_by query in descending order", () => {
+    it("GET-200: GET request returns an array of all the articles and sorted by sort_by query in descending order", () => {
       return request(app)
         .get("/api/articles?sort_by=title")
         .expect(200)
@@ -378,7 +378,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("title")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at with order query", () => {
+    it("GET-200: GET request returns an array of all the articles and default sorted by created_at with order query", () => {
       return request(app)
         .get("/api/articles?order=asc")
         .expect(200)
@@ -400,7 +400,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.ascendingBy("created_at")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by as specified in query", () => {
+    it("GET-200: GET request returns an array of all the articles and sorted by as specified in query", () => {
       return request(app)
         .get("/api/articles?sort_by=author&order=asc")
         .expect(200)
@@ -422,7 +422,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.ascendingBy("author")
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by author query", () => {
+    it("GET-200: GET request returns an array of all the articles and sorted by author query", () => {
       return request(app)
         .get("/api/articles?author=butter_bridge")
         .expect(200)
@@ -455,7 +455,7 @@ describe("/api", () => {
           expect(response.body.articles).to.deep.equal([])
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and sorted by topic query", () => {
+    it("GET-200: GET request returns an array of all the articles and sorted by topic query", () => {
       return request(app)
         .get("/api/articles?topic=cats")
         .expect(200)
@@ -488,7 +488,7 @@ describe("/api", () => {
           expect(response.body.articles).to.deep.equal([])
         })
     })
-    it("GET-200: GET request returns an array of all the articles with each article having a comment_count key-value and default sorted by created_at in descending order when passed random queries", () => {
+    it("GET-200: GET request returns an array of all the articles and default sorted by created_at in descending order when passed random queries", () => {
       return request(app)
         .get("/api/articles?abcdef=true&xyz=false")
         .expect(200)
@@ -962,7 +962,8 @@ describe("/api", () => {
               .expect(400)
               .then(response => {
                 expect(response.body).to.deep.equal({
-                  Message: "Bad Request: Column For sort_by Query Does Not Exist"
+                  Message:
+                    "Bad Request: Column For sort_by Query Does Not Exist"
                 })
               })
           })
