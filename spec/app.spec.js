@@ -510,12 +510,34 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it.only("GET-200: GET request returns an array of all the articles and with a limit query for the number of results", () => {
+    it("GET-200: GET request returns an array of all the articles and with a limit query for the number of results", () => {
       return request(app)
         .get("/api/articles?limit=6")
         .expect(200)
         .then(response => {
           expect(response.body.articles).to.have.length(6)
+          expect(response.body.articles).to.be.an("array")
+          response.body.articles.forEach(article => {
+            expect(article).to.have.keys(
+              "article_id",
+              "title",
+              "body",
+              "votes",
+              "topic",
+              "author",
+              "created_at",
+              "comment_count"
+            )
+          })
+          expect(response.body.articles).to.be.descendingBy("created_at")
+        })
+    })
+    it.only("GET-200: GET request returns an array of all the articles and with a limit of ten for the number of results when no limit query specified", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(response => {
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
