@@ -318,7 +318,7 @@ describe("/api", () => {
         .get("/api/articles")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -339,7 +339,7 @@ describe("/api", () => {
         .get("/api/articles")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -361,7 +361,7 @@ describe("/api", () => {
         .get("/api/articles?sort_by=title")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -383,7 +383,7 @@ describe("/api", () => {
         .get("/api/articles?order=asc")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -405,7 +405,7 @@ describe("/api", () => {
         .get("/api/articles?sort_by=author&order=asc")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -493,7 +493,7 @@ describe("/api", () => {
         .get("/api/articles?abcdef=true&xyz=false")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(12)
+          expect(response.body.articles).to.have.length(10)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -532,7 +532,7 @@ describe("/api", () => {
           expect(response.body.articles).to.be.descendingBy("created_at")
         })
     })
-    it.only("GET-200: GET request returns an array of all the articles and with a limit of ten for the number of results when no limit query specified", () => {
+    it("GET-200: GET request returns an array of all the articles and with a limit of ten for the number of results when no limit query specified", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
