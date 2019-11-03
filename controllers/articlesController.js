@@ -7,8 +7,8 @@ const {
 } = require("../models/articlesModel.js")
 
 const getArticles = (req, res, next) => {
-  const { sort_by, order, limit, ...otherQuery } = req.query
-  fetchArticles(sort_by, order, limit, otherQuery)
+  const { sort_by, order, author, topic, limit} = req.query
+  fetchArticles(sort_by, order, author, topic, limit)
     .then(articles => {
       res.status(200).json({ articles })
     })

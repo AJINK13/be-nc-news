@@ -1,6 +1,6 @@
 const connection = require("../db/connection.js")
 
-const fetchArticles = (sort_by, order, limit, { author, topic }) => {
+const fetchArticles = (sort_by, order, author, topic, limit) => {
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
