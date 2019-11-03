@@ -909,7 +909,7 @@ describe("/api", () => {
             })
             return Promise.all(methodPromises)
           })
-          it.only("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
+          it("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")
               .send({ username: "butter_bridge", body: "newly added comment" })
