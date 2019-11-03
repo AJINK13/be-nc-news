@@ -1,7 +1,6 @@
 const connection = require("../db/connection.js")
 
 const fetchArticles = (sort_by, order, limit, { author, topic }) => {
-  console.log(limit)
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
@@ -28,7 +27,7 @@ const fetchArticles = (sort_by, order, limit, { author, topic }) => {
         query.where("articles.topic", topic)
       }
     })
-    .limit(limit)
+    .limit(limit || 10)
     .then(articles => {
       if (!articles.length) {
         if (author) {
