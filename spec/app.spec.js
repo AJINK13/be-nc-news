@@ -909,7 +909,7 @@ describe("/api", () => {
             })
             return Promise.all(methodPromises)
           })
-          it("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
+          it.only("POST-404: POST request for valid syntax for article_id but the article_id does not exist returns status 404 (Not Found)", () => {
             return request(app)
               .post("/api/articles/999/comments")
               .send({ username: "butter_bridge", body: "newly added comment" })
@@ -917,7 +917,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                    "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+                  "Not Found: insert or update on table \"comments\" violates foreign key constraint \"comments_article_id_foreign\""
                 })
               })
           })

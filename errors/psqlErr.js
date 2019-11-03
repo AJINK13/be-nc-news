@@ -10,7 +10,7 @@ const psqlErr = (err, req, res, next) => {
     },
     "23503": {
       status: 404,
-      message: "Not Found: Valid Input Syntax For article_id But Does Not Exist"
+      message: "Not Found:" + " " + createMessage(err)
     },
     "42703": {
       status: 400,
