@@ -575,7 +575,7 @@ describe("/api", () => {
           .expect(400)
           .then(response => {
             expect(response.body).to.deep.equal({
-              Message: "column \"abcdef\" does not exist"
+              Message: "Bad Request: column \"abcdef\" does not exist"
             })
           })
       })
@@ -707,7 +707,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"abcdef\""
+                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
               })
             })
         })
@@ -718,7 +718,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"NaN\""
+                Message: "Bad Request: invalid input syntax for integer: \"NaN\""
               })
             })
         })
@@ -753,7 +753,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"abcdef\""
+                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
               })
             })
         })
@@ -929,7 +929,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "invalid input syntax for integer: \"abcdef\""
+                  "Bad Request: invalid input syntax for integer: \"abcdef\""
                 })
               })
           })
@@ -1006,7 +1006,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "invalid input syntax for integer: \"abcdef\""
+                  "Bad Request: invalid input syntax for integer: \"abcdef\""
                 })
               })
           })
@@ -1017,7 +1017,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "column \"abcdef\" does not exist"
+                  "Bad Request: column \"abcdef\" does not exist"
                 })
               })
           })
@@ -1134,7 +1134,7 @@ describe("/api", () => {
             .send({ inc_votes: "abcdef" })
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"NaN\""
+                Message: "Bad Request: invalid input syntax for integer: \"NaN\""
               })
             })
         })
@@ -1169,7 +1169,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"abcdef\""
+                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
               })
             })
         })
@@ -1190,7 +1190,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "invalid input syntax for integer: \"abcdef\""
+                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
               })
             })
         })

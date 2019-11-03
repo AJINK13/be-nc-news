@@ -6,7 +6,7 @@ const psqlErr = (err, req, res, next) => {
   const psqlCode = {
     "22P02": {
       status: 400,
-      message: createMessage(err)
+      message: "Bad Request:" + " " + createMessage(err)
     },
     "23503": {
       status: 404,
@@ -14,7 +14,7 @@ const psqlErr = (err, req, res, next) => {
     },
     "42703": {
       status: 400,
-      message: createMessage(err)
+      message: "Bad Request:" + " " + createMessage(err)
     }
   }
   const psqlError = psqlCode[err.code]
