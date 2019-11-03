@@ -1,62 +1,68 @@
 const connection = require("../db/connection.js")
 
 const fetchArticles = (sort_by, order, limit, { author, topic }) => {
+  console.log(limit)
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
       message: "Bad Request: Invalid order Query"
     })
-  } else {
-    return connection
-      .select("articles.*")
-      .from("articles")
-      .count({ comment_count: "comments.article_id" })
-      .leftJoin("comments", "articles.article_id", "comments.article_id")
-      .groupBy("articles.article_id")
-      .orderBy(sort_by || "created_at", order || "desc")
-      .modify(query => {
-        if (author) {
-          query.where("articles.author", author)
-        } else if (topic) {
-          query.where("articles.topic", topic)
-        }
-      })
-      .limit(limit || 10)
-      .then(articles => {
-        if (!articles.length) {
-          if (author) {
-            return connection
-              .select("*")
-              .from("users")
-              .where("username", author)
-              .then(([user]) => {
-                if (!user) {
-                  return Promise.reject({
-                    status: 404,
-                    message: "Not Found: author Does Not Exist"
-                  })
-                }
-                return []
-              })
-          } else if (topic) {
-            return connection
-              .select("*")
-              .from("topics")
-              .where("slug", topic)
-              .then(([topic]) => {
-                if (!topic) {
-                  return Promise.reject({
-                    status: 404,
-                    message: "Not Found: topic Does Not Exist"
-                  })
-                }
-                return []
-              })
-          }
-        }
-        return articles
-      })
   }
+  // if (limit !== undefined && limit ===NaN) {
+  //   return Promise.reject({
+  //     status: 400,
+  //     message: "Bad Request: Invalid limit Query"
+  //   })
+  // }
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .groupBy("articles.article_id")
+    .orderBy(sort_by || "created_at", order || "desc")
+    .modify(query => {
+      if (author) {
+        query.where("articles.author", author)
+      } else if (topic) {
+        query.where("articles.topic", topic)
+      }
+    })
+    .limit(limit)
+    .then(articles => {
+      if (!articles.length) {
+        if (author) {
+          return connection
+            .select("*")
+            .from("users")
+            .where("username", author)
+            .then(([user]) => {
+              if (!user) {
+                return Promise.reject({
+                  status: 404,
+                  message: "Not Found: author Does Not Exist"
+                })
+              }
+              return []
+            })
+        } else if (topic) {
+          return connection
+            .select("*")
+            .from("topics")
+            .where("slug", topic)
+            .then(([topic]) => {
+              if (!topic) {
+                return Promise.reject({
+                  status: 404,
+                  message: "Not Found: topic Does Not Exist"
+                })
+              }
+              return []
+            })
+        }
+      }
+      return articles
+    })
 }
 
 const fetchArticle = article_id => {
@@ -71,7 +77,8 @@ const fetchArticle = article_id => {
       if (!article) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
+          message:
+            "Not Found: Valid Input Syntax for article_id But Does Not Exist"
         })
       }
       return article
@@ -97,7 +104,8 @@ const updateArticle = (article_id, patchVote) => {
       if (!article) {
         return Promise.reject({
           status: 404,
-          message: "Not Found: Valid Input Syntax for article_id But Does Not Exist"
+          message:
+            "Not Found: Valid Input Syntax for article_id But Does Not Exist"
         })
       }
       return article
