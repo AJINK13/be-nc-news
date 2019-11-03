@@ -1,8 +1,12 @@
+const createMessage = err => {
+  return err.message.split(" - ")[1]
+}
+
 const psqlErr = (err, req, res, next) => {
   const psqlCode = {
     "22P02": {
       status: 400,
-      message: "Bad Request: Invalid Input Syntax - Expected Integer"
+      message: createMessage(err)
     },
     "23503": {
       status: 404,
@@ -10,7 +14,7 @@ const psqlErr = (err, req, res, next) => {
     },
     "42703": {
       status: 400,
-      message: "Bad Request: Column For sort_by Query Does Not Exist"
+      message: createMessage(err)
     }
   }
   const psqlError = psqlCode[err.code]
@@ -20,5 +24,3 @@ const psqlErr = (err, req, res, next) => {
 }
 
 module.exports = psqlErr
-
-// DECIDED TO MAKE CUSTOM ERROR MESSAGES RATHER THAN PSQL ERROR MESSAGES
