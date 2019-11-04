@@ -610,16 +610,16 @@ describe("/api", () => {
           })
       })
     })
-    // it("GET-400: GET request for invalid limit query returns status 400 (Bad Request)", () => {
-    //   return request(app)
-    //     .get("/api/articles?limit=abcdef")
-    //     .expect(400)
-    //     .then(response => {
-    //       expect(response.body).to.deep.equal({
-    //         Message: "Bad Request: Invalid limit Query"
-    //       })
-    //     })
-    // })
+    it("GET-400: GET request for invalid limit query returns status 400 (Bad Request)", () => {
+      return request(app)
+        .get("/api/articles?limit=abcdef")
+        .expect(400)
+        .then(response => {
+          expect(response.body).to.deep.equal({
+            Message: "Bad Request: Invalid limit Query"
+          })
+        })
+    })
     describe("/:article_id", () => {
       it("GET-200: GET request returns an article object for the specified article_id along with comment_count key in the object", () => {
         return request(app)

@@ -1,18 +1,18 @@
 const connection = require("../db/connection.js")
 
-const fetchArticles = (sort_by, order, author, topic, limit) => {
+const fetchArticles = (sort_by, order, author, topic, limit = 10) => {
   if (order !== undefined && order !== "asc" && order !== "desc") {
     return Promise.reject({
       status: 400,
       message: "Bad Request: Invalid order Query"
     })
   }
-  // if (limit !== undefined && limit ===NaN) {
-  //   return Promise.reject({
-  //     status: 400,
-  //     message: "Bad Request: Invalid limit Query"
-  //   })
-  // }
+  if (limit && isNaN(+limit)) {
+    return Promise.reject({
+      status: 400,
+      message: "Bad Request: Invalid limit Query"
+    })
+  }
   return connection
     .select("articles.*")
     .from("articles")
@@ -27,7 +27,7 @@ const fetchArticles = (sort_by, order, author, topic, limit) => {
         query.where("articles.topic", topic)
       }
     })
-    .limit(limit || 10)
+    .limit(limit)
     .then(articles => {
       if (!articles.length) {
         if (author) {
