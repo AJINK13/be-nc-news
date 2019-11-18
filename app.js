@@ -8,9 +8,11 @@ const psqlErr = require("./errors/psqlErr.js")
 const serverErr = require("./errors/serverErr.js")
 
 app.use(express.json())
+app.use(cors())
 
 app.use("/api", apiRouter)
 app.all("/*", routeErr)
+
 app.use(psqlErr)
 app.use(customErr)
 app.use(serverErr)
