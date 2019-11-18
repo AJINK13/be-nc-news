@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const app = express()
 const apiRouter = require("./routes/apiRouter.js")
 const routeErr = require("./errors/routeErr.js")
