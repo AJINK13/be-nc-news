@@ -59,7 +59,7 @@ The following have been used for the development and running of the application:
 
 - [Express](https://expressjs.com/): Web application framework for Node.js.
 - [PostgreSQL](https://www.postgresql.org/): Open source relational database
-- Knex.js: Node.js query builder for relational databases
+- [Knex.js](https://knexjs.org/): Node.js query builder for relational databases
 - [Mocha](https://mochajs.org/): Testing framework which is used for unit and integration testing
 - [Chai](https://www.chaijs.com/): Assertion library
 - [Chai-Sorted](https://www.chaijs.com/plugins/chai-sorted/): Extension of Chai which allows for testing if an array has sorted values
