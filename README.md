@@ -27,7 +27,7 @@ You will need the following
 - [Node.js download and documentation can be found here. Note that npm is packaged with Node.js](https://nodejs.org/en/)
 - [PostgreSQL download and documentation can be found here](https://www.postgresql.org/)
 
-### Installing
+## Installing
 
 1. Clone the project to your local machine. Optionally you can fork the project and then clone.
 
