@@ -27,7 +27,7 @@ const fetchArticles = (sort_by, order, author, topic, limit = 10) => {
         query.where("articles.topic", topic)
       }
     })
-    .limit(limit)
+    // .limit(limit)
     .then(articles => {
       if (!articles.length) {
         if (author) {
