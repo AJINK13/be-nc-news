@@ -22,6 +22,8 @@ You will need the following
 - npm v6.x.x
 - PostgreSQL (AKA PSQL)
 
+Alternatively, you can use [yarn](https://yarnpkg.com/en/) instead of npm. The npm commands shown below will need to be changed accordingly.
+
 #### Installing Prerequisites
 
 - [Node.js download and documentation can be found here. Note that npm is packaged with Node.js](https://nodejs.org/en/)
