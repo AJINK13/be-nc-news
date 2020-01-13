@@ -318,7 +318,7 @@ describe("/api", () => {
         .get("/api/articles")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -339,7 +339,7 @@ describe("/api", () => {
         .get("/api/articles")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -361,7 +361,7 @@ describe("/api", () => {
         .get("/api/articles?sort_by=title")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -383,7 +383,7 @@ describe("/api", () => {
         .get("/api/articles?order=asc")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -405,7 +405,7 @@ describe("/api", () => {
         .get("/api/articles?sort_by=author&order=asc")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -493,51 +493,7 @@ describe("/api", () => {
         .get("/api/articles?abcdef=true&xyz=false")
         .expect(200)
         .then(response => {
-          expect(response.body.articles).to.have.length(10)
-          expect(response.body.articles).to.be.an("array")
-          response.body.articles.forEach(article => {
-            expect(article).to.have.keys(
-              "article_id",
-              "title",
-              "body",
-              "votes",
-              "topic",
-              "author",
-              "created_at",
-              "comment_count"
-            )
-          })
-          expect(response.body.articles).to.be.descendingBy("created_at")
-        })
-    })
-    it("GET-200: GET request returns an array of all the articles and with a limit query for the number of results", () => {
-      return request(app)
-        .get("/api/articles?limit=6")
-        .expect(200)
-        .then(response => {
-          expect(response.body.articles).to.have.length(6)
-          expect(response.body.articles).to.be.an("array")
-          response.body.articles.forEach(article => {
-            expect(article).to.have.keys(
-              "article_id",
-              "title",
-              "body",
-              "votes",
-              "topic",
-              "author",
-              "created_at",
-              "comment_count"
-            )
-          })
-          expect(response.body.articles).to.be.descendingBy("created_at")
-        })
-    })
-    it("GET-200: GET request returns an array of all the articles and with a limit of ten for the number of results when no limit query specified", () => {
-      return request(app)
-        .get("/api/articles")
-        .expect(200)
-        .then(response => {
-          expect(response.body.articles).to.have.length(10)
+          expect(response.body.articles).to.have.length(12)
           expect(response.body.articles).to.be.an("array")
           response.body.articles.forEach(article => {
             expect(article).to.have.keys(
@@ -575,7 +531,7 @@ describe("/api", () => {
           .expect(400)
           .then(response => {
             expect(response.body).to.deep.equal({
-              Message: "Bad Request: column \"abcdef\" does not exist"
+              Message: 'Bad Request: column "abcdef" does not exist'
             })
           })
       })
@@ -675,6 +631,24 @@ describe("/api", () => {
             })
           })
       })
+      // it("PATCH-200: PATCH request returns an article object for the specified article_id with the votes property not updated when no inc_votes on the body", () => {
+      //   return request(app)
+      //     .patch("/api/articles/1")
+      //     .send({})
+      //     .expect(200)
+      //     .then(response => {
+      //       expect(response.body.article).to.be.an("object")
+      //       expect(response.body.article).to.deep.equal({
+      //         article_id: 1,
+      //         title: "Living in the shadow of a great man",
+      //         body: "I find this existence challenging",
+      //         votes: 100,
+      //         topic: "mitch",
+      //         author: "butter_bridge",
+      //         created_at: "2018-11-15T12:21:54.171Z"
+      //       })
+      //     })
+      // })
       describe("/:article_id ERRORS", () => {
         it("INVALID METHODS-405: INVALID METHOD request returns 405 (Method Not Allowed)", () => {
           const invalidMethods = ["post", "put", "delete"]
@@ -707,7 +681,8 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
+                Message:
+                  'Bad Request: invalid input syntax for integer: "abcdef"'
               })
             })
         })
@@ -718,7 +693,7 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"NaN\""
+                Message: 'Bad Request: invalid input syntax for integer: "NaN"'
               })
             })
         })
@@ -753,7 +728,8 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
+                Message:
+                  'Bad Request: invalid input syntax for integer: "abcdef"'
               })
             })
         })
@@ -917,7 +893,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "Not Found: insert or update on table \"comments\" violates foreign key constraint \"comments_article_id_foreign\""
+                    'Not Found: insert or update on table "comments" violates foreign key constraint "comments_article_id_foreign"'
                 })
               })
           })
@@ -929,7 +905,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "Bad Request: invalid input syntax for integer: \"abcdef\""
+                    'Bad Request: invalid input syntax for integer: "abcdef"'
                 })
               })
           })
@@ -1006,7 +982,7 @@ describe("/api", () => {
               .then(response => {
                 expect(response.body).to.deep.equal({
                   Message:
-                  "Bad Request: invalid input syntax for integer: \"abcdef\""
+                    'Bad Request: invalid input syntax for integer: "abcdef"'
                 })
               })
           })
@@ -1016,8 +992,7 @@ describe("/api", () => {
               .expect(400)
               .then(response => {
                 expect(response.body).to.deep.equal({
-                  Message:
-                  "Bad Request: column \"abcdef\" does not exist"
+                  Message: 'Bad Request: column "abcdef" does not exist'
                 })
               })
           })
@@ -1108,6 +1083,24 @@ describe("/api", () => {
             })
           })
       })
+      // it("PATCH-200: PATCH request returns a comment object for the specified comment_id with the votes property not updated when no inc_votes is on the body", () => {
+      //   return request(app)
+      //     .patch("/api/comments/1")
+      //     .send()
+      //     .expect(200)
+      //     .then(response => {
+      //       expect(response.body.comment).to.be.an("object")
+      //       expect(response.body.comment).to.deep.equal({
+      //         comment_id: 1,
+      //         author: "butter_bridge",
+      //         article_id: 9,
+      //         votes: 16,
+      //         created_at: "2017-11-22T12:36:03.389Z",
+      //         body:
+      //           "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+      //       })
+      //     })
+      // })
       it("DELETE-204: DELETE request returns status 204 (No Content)", () => {
         return request(app)
           .delete("/api/comments/1")
@@ -1134,7 +1127,7 @@ describe("/api", () => {
             .send({ inc_votes: "abcdef" })
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"NaN\""
+                Message: 'Bad Request: invalid input syntax for integer: "NaN"'
               })
             })
         })
@@ -1169,7 +1162,8 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
+                Message:
+                  'Bad Request: invalid input syntax for integer: "abcdef"'
               })
             })
         })
@@ -1190,7 +1184,8 @@ describe("/api", () => {
             .expect(400)
             .then(response => {
               expect(response.body).to.deep.equal({
-                Message: "Bad Request: invalid input syntax for integer: \"abcdef\""
+                Message:
+                  'Bad Request: invalid input syntax for integer: "abcdef"'
               })
             })
         })
