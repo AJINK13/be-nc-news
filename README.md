@@ -31,7 +31,7 @@ You will need the following
 
 1. Clone the project to your local machine. Optionally you can fork the project and then clone.
 
-> git clone `https://github.com/AJINK13/be-nc-news.git`
+> git clone `https://github.com/AJINK13/be-nc-news`
 
 2. Install dependencies
 
